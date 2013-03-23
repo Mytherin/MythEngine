@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_WIN32WINDOW", "Test_WIN32WINDOW\Test_WIN32WINDOW.vcxproj", "{E725EE69-F1EA-46D9-925C-A70C4D692E03}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_os_windows", "..\myth_os_windows\myth_os_windows\myth_os_windows.vcxproj", "{02700ECF-8D26-4336-89B4-64050321647F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_window", "..\myth_window\myth_window\myth_window.vcxproj", "{EE89E428-56FE-46E2-AB34-6780C737BA5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_input", "..\myth_input\myth_input\myth_input.vcxproj", "{185DB830-8B76-4D5F-8322-F546AD79706D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_managers", "..\myth_managers\myth_managers\myth_managers.vcxproj", "{27CE3CDF-DB08-4343-BBA0-811A05D64752}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E725EE69-F1EA-46D9-925C-A70C4D692E03}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E725EE69-F1EA-46D9-925C-A70C4D692E03}.Debug|Win32.Build.0 = Debug|Win32
+		{E725EE69-F1EA-46D9-925C-A70C4D692E03}.Release|Win32.ActiveCfg = Release|Win32
+		{E725EE69-F1EA-46D9-925C-A70C4D692E03}.Release|Win32.Build.0 = Release|Win32
+		{02700ECF-8D26-4336-89B4-64050321647F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{02700ECF-8D26-4336-89B4-64050321647F}.Debug|Win32.Build.0 = Debug|Win32
+		{02700ECF-8D26-4336-89B4-64050321647F}.Release|Win32.ActiveCfg = Release|Win32
+		{02700ECF-8D26-4336-89B4-64050321647F}.Release|Win32.Build.0 = Release|Win32
+		{EE89E428-56FE-46E2-AB34-6780C737BA5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE89E428-56FE-46E2-AB34-6780C737BA5A}.Debug|Win32.Build.0 = Debug|Win32
+		{EE89E428-56FE-46E2-AB34-6780C737BA5A}.Release|Win32.ActiveCfg = Release|Win32
+		{EE89E428-56FE-46E2-AB34-6780C737BA5A}.Release|Win32.Build.0 = Release|Win32
+		{185DB830-8B76-4D5F-8322-F546AD79706D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{185DB830-8B76-4D5F-8322-F546AD79706D}.Debug|Win32.Build.0 = Debug|Win32
+		{185DB830-8B76-4D5F-8322-F546AD79706D}.Release|Win32.ActiveCfg = Release|Win32
+		{185DB830-8B76-4D5F-8322-F546AD79706D}.Release|Win32.Build.0 = Release|Win32
+		{27CE3CDF-DB08-4343-BBA0-811A05D64752}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27CE3CDF-DB08-4343-BBA0-811A05D64752}.Debug|Win32.Build.0 = Debug|Win32
+		{27CE3CDF-DB08-4343-BBA0-811A05D64752}.Release|Win32.ActiveCfg = Release|Win32
+		{27CE3CDF-DB08-4343-BBA0-811A05D64752}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
