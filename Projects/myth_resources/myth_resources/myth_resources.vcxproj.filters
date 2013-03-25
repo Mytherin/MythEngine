@@ -15,34 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\assetmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\resourcemanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\asset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\fileasset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\source.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\resourcelinks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\resources\assettypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="assetmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="resourcemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\resources\assettypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\resources\resourcemanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

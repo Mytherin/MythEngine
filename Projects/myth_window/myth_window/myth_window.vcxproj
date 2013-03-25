@@ -82,12 +82,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\window\monitor.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\window\resolution.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\window\windowoptions.h" />
+    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="window.cpp" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\window\monitor.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\window\resolution.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\window\windowoptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

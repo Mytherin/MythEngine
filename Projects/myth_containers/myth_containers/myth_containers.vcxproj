@@ -10,6 +10,11 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\dictionary.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\list.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\octree.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B6909CD5-61DF-4C3C-B30E-3CC27EA9667A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -77,11 +82,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\dictionary.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\list.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\octree.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -16,9 +16,9 @@
     <ClCompile Include="win32windowmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32filemanager.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32graphicsmanager.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32windowmanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32filemanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32graphicsmanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32windowmanager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{02700ECF-8D26-4336-89B4-64050321647F}</ProjectGuid>

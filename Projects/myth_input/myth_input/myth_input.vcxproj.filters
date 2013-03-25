@@ -15,26 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\inputhandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\keystate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\mousestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\inputevent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\inputstream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\input\keyvalues.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="inputhandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,5 +24,25 @@
     <ClCompile Include="mousestate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\inputevent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\inputhandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\inputstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\keystate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\keyvalues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\input\mousestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

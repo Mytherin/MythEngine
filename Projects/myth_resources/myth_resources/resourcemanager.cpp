@@ -4,16 +4,14 @@
 #include <myth\graphics\shader.h>
 #include <myth\graphics\shaderprogram.h>
 
-#include <myth\resources\assettypes.h>
+#include <myth\assets\assetmanager.h>
 
-using namespace myth::containers;
+using namespace myth::assets;
 using namespace myth::resources;
 
 
-ResourceManager::ResourceManager() : 
-	m_assets(Dictionary<Dictionary<Asset*>>(10)), m_fileid(0)
+ResourceManager::ResourceManager()
 {
-	m_assets.Insert(0,Dictionary<Asset*>(100));
 }
 
 ResourceManager::~ResourceManager()
@@ -23,26 +21,26 @@ ResourceManager::~ResourceManager()
 
 int ResourceManager::CreateAsset(short type, AssetData *assetData)
 {
-	int id = GetID();
-	int package = 0;
+	Asset* asset(0);
 
 	switch (type)
 	{
 	case ASSET_FRAGMENT_SHADER:
-		m_assets[package].Insert(id,new myth::graphics::FragmentShader(assetData,package));
-		return id;
+		asset = new myth::graphics::FragmentShader(assetData,0);
+		break;
 	case ASSET_VERTEX_SHADER:
-		m_assets[package].Insert(id,new myth::graphics::VertexShader(assetData,package));
-		return id;
+		asset = new myth::graphics::VertexShader(assetData,0);
+		break;
 	case ASSET_SHADERPROGRAM:
-		m_assets[package].Insert(id,new myth::graphics::ShaderProgram(assetData,package));
-		return id;
+		asset = new myth::graphics::ShaderProgram(assetData,0);
+		break;
+	default: return -1;
 	}
-	return -1;
-}
 
 
-Asset* ResourceManager::GetAsset(int package, int id)
-{
-	return m_assets[package][id];
+	int id = g_assetManager.AddAsset(asset);
+
+
+	return id;
 }
+

@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_io", "..\myth_io\myth_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_resources", "..\myth_resources\myth_resources\myth_resources.vcxproj", "{DFD752F8-246F-4883-AF19-03ABB4F4BFE8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myth_assets", "..\myth_assets\myth_asset.vcxproj", "{AAACC200-ECB5-46B6-98C5-B67805BD296B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -67,6 +69,10 @@ Global
 		{DFD752F8-246F-4883-AF19-03ABB4F4BFE8}.Debug|Win32.Build.0 = Debug|Win32
 		{DFD752F8-246F-4883-AF19-03ABB4F4BFE8}.Release|Win32.ActiveCfg = Release|Win32
 		{DFD752F8-246F-4883-AF19-03ABB4F4BFE8}.Release|Win32.Build.0 = Release|Win32
+		{AAACC200-ECB5-46B6-98C5-B67805BD296B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AAACC200-ECB5-46B6-98C5-B67805BD296B}.Debug|Win32.Build.0 = Debug|Win32
+		{AAACC200-ECB5-46B6-98C5-B67805BD296B}.Release|Win32.ActiveCfg = Release|Win32
+		{AAACC200-ECB5-46B6-98C5-B67805BD296B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

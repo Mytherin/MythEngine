@@ -1,6 +1,7 @@
 
 #include <myth\managers\game.h>
 
+
 using namespace myth::managers;
 
 class TestGraphics : public Game

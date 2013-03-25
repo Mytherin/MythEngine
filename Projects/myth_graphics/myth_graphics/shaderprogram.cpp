@@ -7,14 +7,14 @@
 #include <myth\io\filemanager.h>
 #include <myth\io\stringext.h>
 
-#include <myth\resources\assetmanager.h>
+#include <myth\assets\assetmanager.h>
 
 using namespace glm;
 using namespace myth::graphics;
 using namespace myth::io;
-using namespace myth::resources;
+using namespace myth::assets;
 
-ShaderProgram::ShaderProgram(myth::resources::AssetData *assetData, int package) : 
+ShaderProgram::ShaderProgram(myth::assets::AssetData *assetData, int package) : 
 	Asset(assetData,package)
 {
 	m_linked = false;
@@ -23,11 +23,6 @@ ShaderProgram::ShaderProgram(myth::resources::AssetData *assetData, int package)
 	glBindAttribLocation(m_shaderProgram,0,"Position");
 	glBindAttribLocation(m_shaderProgram,1,"TexCoord");
 	glBindAttribLocation(m_shaderProgram,2,"Normal");
-
-	Uniforms.maxdirectionalLights = 0;
-	Uniforms.maxpointLights = 0;
-	Uniforms.maxspotLights = 2;
-	Uniforms.samplerCount = 4;
 }
 
 ShaderProgram::~ShaderProgram()
@@ -35,22 +30,22 @@ ShaderProgram::~ShaderProgram()
 	if (m_shaderProgram) glDeleteProgram(m_shaderProgram);
 }
 
-void ShaderProgram::Load(std::string source)
+void ShaderProgram::LoadFromSource(std::string source)
 {
 	std::vector<int> shaders = SplitIntegers(source,';');
 
 	for(int i = 0; i < shaders.size(); i++)
 	{
 		Shader *shader = g_assetManager.GetAsset<Shader>(m_package,shaders[i]);
-		m_shaders.Add(shader);
 		AttachShader(*shader);
 	}
+	Link();
 }
 
-void ShaderProgram::Reload(std::string source)
+void ShaderProgram::ReloadFromSource(std::string source)
 {
 	Destroy();
-	Load(source);
+	LoadFromSource(source);
 }
 
 void ShaderProgram::Destroy()
@@ -111,6 +106,12 @@ void ShaderProgram::Activate() const
 	glUseProgram(m_shaderProgram);
 }
 
+
+void ShaderProgram::Deactivate()
+{
+	glUseProgram(0);
+}
+
 void ShaderProgram::Link()
 {
 	glLinkProgram(m_shaderProgram);
@@ -141,7 +142,6 @@ void ShaderProgram::Link()
 
 	GenerateUniformLocations();
 }
-
 
 void ShaderProgram::BindAttribLocation(GLuint location, const char *name)
 {

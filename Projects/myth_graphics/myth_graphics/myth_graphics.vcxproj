@@ -23,27 +23,28 @@
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\camera.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\framebuffer.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\graphics.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\graphicsoptions.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\light.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\lightconstants.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\lightmanager.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\lights\directionallight.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\lights\pointlight.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\lights\spotlight.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\material.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\materials\materialtypes.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\mesh.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\modelmesh.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\renderingmanager.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\shader.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\shaderconstants.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\shadermanager.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\shaderprogram.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\texture.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\graphics\vertex.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\camera.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\framebuffer.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\graphics.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\graphicsoptions.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\light.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\lightconstants.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\lightmanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\lights\directionallight.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\lights\pointlight.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\lights\spotlight.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\material.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\materials\materialtypes.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\mesh.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\modelmesh.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\renderingmanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shader.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderconstants.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shadermanager.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderprogram.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\testmesh.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\texture.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\vertex.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{54A0D7A0-15DA-4B6E-AAC4-47DF5FB643BD}</ProjectGuid>
@@ -95,7 +96,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,7 +114,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

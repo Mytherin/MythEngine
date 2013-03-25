@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(MYTHERIN)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(OutDir);$(OPENGL)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,8 +53,12 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;myth_assets.lib;myth_io.lib;myth_resources.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OPENGL)Lib\*.dll" "$(OutDir)"
+copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -67,8 +71,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;myth_assets.lib;myth_io.lib;myth_resources.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OPENGL)Lib\*.dll" "$(OutDir)"
+copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

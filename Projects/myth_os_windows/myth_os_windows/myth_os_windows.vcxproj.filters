@@ -26,13 +26,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32windowmanager.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32filemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32graphicsmanager.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32graphicsmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\os\windows\win32filemanager.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\os\windows\win32windowmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -77,14 +77,16 @@ void Framebuffer::Init(unsigned int width, unsigned int height)
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,  m_depth.id(),0); 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,  m_texture.id(),0); 
 
-	glBindFramebuffer(GL_FRAMEBUFFER,0); //unbind
-
-	GLenum status = glCheckFramebufferStatus(m_framebuffer);
-
+	
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
 		printf("FRAMEBUFFER ERROR: %s\n", gluErrorString(glGetError()));
+		Assert(0,"FRAMEBUFFER ERROR: Did not successfully create the framebuffer.");
 	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER,0); //unbind
 }
 
 void Framebuffer::StartWrite()

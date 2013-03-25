@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\dictionary.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\octree.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\containers\list.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\containers\octree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

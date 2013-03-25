@@ -11,26 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\aabb.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\frustum.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\MYTH\PHYS\iboundingvolume.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\line.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\linesegment.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\obb.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\plane.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\pointcloud.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\polygon.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\polyhedron.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\ray.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\rectangle.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\rotation.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\shapes.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\simplex.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\sphere.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\tetrahedron.h" />
-    <ClInclude Include="..\..\..\..\..\Dropbox\Mytherin\MythLibraries\Include\myth\phys\triangle.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="aabb.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="linesegment.cpp" />
@@ -45,6 +25,27 @@
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="tetrahedron.cpp" />
     <ClCompile Include="triangle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\aabb.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\collisions.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\frustum.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\iboundingvolume.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\line.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\linesegment.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\obb.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\plane.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\pointcloud.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\polygon.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\polyhedron.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\ray.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\rectangle.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\rotation.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\shapes.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\simplex.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\sphere.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\tetrahedron.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\phys\triangle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4FC78E5-DF73-4B6C-A33C-5C956134B3BB}</ProjectGuid>

@@ -4,6 +4,9 @@
 #include <gl\GL.h>
 #include <gl\GLU.h>
 
+
+#include <myth\resources\resourcemanager.h>
+#include <myth\assets\assetmanager.h>
 #include <myth\graphics\materials\materialtypes.h>
 #include <myth\graphics\camera.h>
 #include <myth\graphics\framebuffer.h>
@@ -22,9 +25,11 @@
 #include <myth\phys\tetrahedron.h>
 #include <myth\phys\triangle.h>
 
+using namespace myth::assets;
 using namespace myth::input;
 using namespace myth::graphics;
 using namespace myth::phys;
+using namespace myth::resources;
 
 Texture *texture;
 Framebuffer *frameBuffer;
@@ -37,20 +42,28 @@ bool drag;
 
 void TestGraphics::LoadContent()
 {
-	program = new ShaderProgram();
-	program->LoadShaderFromFile(GL_VERTEX_SHADER,"specularspotlightshadow.vert");
-	program->LoadShaderFromFile(GL_FRAGMENT_SHADER,"specularspotlightshadow.frag");
-	program->Link();
+	//program = new ShaderProgram();
+	//program->LoadShaderFromFile(GL_VERTEX_SHADER,"specularspotlightshadow.vert");
+	//program->LoadShaderFromFile(GL_FRAGMENT_SHADER,"specularspotlightshadow.frag");
+	//program->Link();
+
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("specularspotlightshadow.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("specularspotlightshadow.frag"));
+
+	g_assetManager.GetAsset(vertexShader)->Load();
+	g_assetManager.GetAsset(fragmentShader)->Load();
+
+	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 
 	//int shaderProgram = g_assetManager.AddAsset(ASSET_SHADER_PROGRAM,source("v=\"specularspotlightshadow.vert\"; f=\"specularspotlightshadow.frag\";"));
 
 	//HShaderProgram handle = g_assetManager.GetHandle<ShaderProgram>(shaderProgram);
+	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
-	
+	program->Load();
+
 	frameBuffer = new Framebuffer(GL_DEPTH_BUFFER);
 	frameBuffer->Init(1024,760);
-
-	program->Activate();
 
 	program->PrintUniforms();
 
@@ -206,8 +219,6 @@ void TestGraphics::Draw(float t)
 
 	//g_renderingManager.RenderPrimitive(myth::phys::Rectangle(p,Point(p.x+1,p.y,p.z),Point(p.x,p.y+1,p.z)));
 
-
-
 	Camera lightCamera;
 	
 	lightCamera.Perspective(75.0f,16.0f / 9.0f,0.1f,100.0f);
@@ -247,4 +258,6 @@ void TestGraphics::Draw(float t)
 
 	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
+
+	ShaderProgram::Deactivate();
 }

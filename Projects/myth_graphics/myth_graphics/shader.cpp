@@ -6,7 +6,7 @@
 
 using namespace myth::graphics;
 
-Shader::Shader(GLenum shaderType,myth::resources::AssetData *assetData, int package) :
+Shader::Shader(GLenum shaderType,myth::assets::AssetData *assetData, int package) :
 	Asset(assetData,package), m_shaderType(shaderType),m_shaderHandle(0)
 {
 }
@@ -16,7 +16,7 @@ Shader::~Shader()
 	Destroy();
 }
 
-void Shader::Load(std::string source)
+void Shader::LoadFromSource(std::string source)
 {
 	GLuint shader = Create(m_shaderType,source);
 
@@ -26,11 +26,11 @@ void Shader::Load(std::string source)
 	}
 }
 
-void Shader::Reload(std::string source)
+void Shader::ReloadFromSource(std::string source)
 {
 	Destroy();
 
-	Load(source);
+	LoadFromSource(source);
 }
 
 bool Shader::IsLoaded()
@@ -47,28 +47,46 @@ void Shader::Destroy()
 	m_shaderHandle = 0;
 }
 
+bool GetDefine(std::string defineName, std::string source, int* value)
+{
+	std::string define = "#define " + defineName + " ";
+	int loc = source.find(define);
+	if (loc < source.size() - define.size() - 1)
+	{
+		int i = loc + define.size();
+		while(i < source.size() && source[i] != '\n' && source[i] != '\r') ++i;
+		
+		*value = std::stoi(source.substr(loc + define.size(),i - (loc + define.size())));
+		return true;
+	}
+	return false;
+}
+
 GLuint Shader::Create(GLenum type, std::string source)
 {
 	GLuint shader = glCreateShader(type);
 
 	Assert(shader,"SHADER CREATION ERROR: Could not create a shader of the specified shader type.");
 
-	//PARSE SHADER SOURCE TO FIND MAX LIGHTS
-	int directionalLights = shaderProgram->Uniforms.maxdirectionalLights;
-	int pointLights = shaderProgram->Uniforms.maxpointLights;
-	int spotLights = shaderProgram->Uniforms.maxspotLights;
-	int textures = shaderProgram->Uniforms.samplerCount;
-
+	int directionalLights, pointLights, spotLights, textures;
+	
+	//parse shader source to find max lights, if the information is not there, add the default information
+	if (!GetDefine("MaxDirectionalLights",source,&directionalLights)) directionalLights = DefaultDirectionalLights;
+	if (!GetDefine("MaxPointLights",source,&pointLights)) pointLights = DefaultPointLights;
+	if (!GetDefine("MaxSpotLights",source,&spotLights)) spotLights = DefaultSpotLights;
+	if (!GetDefine("MaxSamplers",source,&textures)) textures = DefaultSamplerCount;
+	
 	//prepend uniform variables used in the shader (matrices, samplers, light information)
 	std::stringstream ss;
-	ss << "#version 150" << "\n";
-	ss << "#define MaxDirectionalLights " << directionalLights << "\n"; 
-	ss << "#define MaxPointLights " << pointLights << "\n";
-	ss << "#define MaxSpotLights " << spotLights << "\n";
+	ss << "#version 150 \r\n";
+	ss << "#define MaxDirectionalLights "   << directionalLights <<   "\n"; 
+	ss << "#define MaxPointLights "         << pointLights       <<   "\n";
+	ss << "#define MaxSpotLights "          << spotLights        <<   "\n";
+	ss << "#define MaxSamplers "            << textures          <<   "\n";
 	ss << 
 		"uniform int DirectionalLights;                                \n"
 		"uniform int PointLights;                                      \n"
-		"uniform int SpotLights;                                      \n"
+		"uniform int SpotLights;                                       \n"
 		"uniform mat4 Model;                                           \n"
 		"uniform mat4 View;                                            \n" 
 		"uniform mat4 Projection;                                      \n" 
@@ -124,11 +142,10 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"uniform vec3 EyeDir;                                          \n";
 	ss << 
 		"uniform sampler2D Sampler[" << textures << "];    \n";
-
 	std::string str = ss.str();
 
-	const GLchar *codeArray[] = {ss.str().c_str(),source.c_str()};
-
+	const GLchar *codeArray[] = {str.c_str(), source.c_str()};
+	
 	glShaderSource(shader,2,codeArray,NULL);
 
 	glCompileShader(shader);
@@ -150,6 +167,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 			printf(log);
 			free(log);
 		}
+		printf(ss.str().c_str());
 		Assert(0,"SHADER CREATION ERROR: Shader compilation failed.");
 		return 0;
 	}

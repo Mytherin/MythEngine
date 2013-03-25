@@ -15,25 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\myth_resources\myth_resources\assetmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\asset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\assetdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\assetmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\fileasset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\resourcelinks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\asset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\assetdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\assetmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\fileasset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\resourcelinks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="assetmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

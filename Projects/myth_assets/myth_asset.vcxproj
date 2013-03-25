@@ -10,6 +10,16 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\asset.h" />
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\assetdata.h" />
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\assetmanager.h" />
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\fileasset.h" />
+    <ClInclude Include="..\..\Libraries\Mytherin\Include\myth\assets\resourcelinks.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="assetmanager.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AAACC200-ECB5-46B6-98C5-B67805BD296B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -82,16 +92,6 @@
       <AdditionalDependencies>myth_io.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\myth_resources\myth_resources\assetmanager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\asset.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\assetdata.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\assetmanager.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\fileasset.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\assets\resourcelinks.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
