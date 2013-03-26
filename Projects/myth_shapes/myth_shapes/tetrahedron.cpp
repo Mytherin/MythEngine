@@ -38,7 +38,7 @@ Point Tetrahedron::ClosestPoint(const Point& A, const Point& B,const Point& C,co
 	Assert(AreNotCollinear(A,B,C,D),L"DEGENERATE TETRAHEDRON ERROR: The tetrahedron has three collinear points (they lie on the same line).");
 	Assert(AreNotCoplanar(A,B,C,D),L"DEGENERATE TETRAHEDRON ERROR: The tetrahedron has four coplanar points (they lie on the same plane).");
 
-
+	return Point(0,0,0);
 }
 
 Distance Tetrahedron::DistanceToPoint(const Point& A, const Point& B,const Point& C,const Point& D, const Point& O)

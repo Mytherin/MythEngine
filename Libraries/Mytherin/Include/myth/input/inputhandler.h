@@ -70,7 +70,7 @@ namespace myth
 			//! Returns a copy of the current mouse state
 			MouseState GetMouseCopy() const; 
 		private:
-			byte m_modifiers;
+			ubyte m_modifiers;
 
 			float m_prevMouseX;
 			float m_prevMouseY;

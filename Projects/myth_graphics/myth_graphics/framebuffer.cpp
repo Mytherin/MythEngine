@@ -1,6 +1,7 @@
 
 
 #include <myth\debug\assert.h>
+#include <cstdio>
 #include <myth\graphics\framebuffer.h>
 
 using namespace myth::graphics;

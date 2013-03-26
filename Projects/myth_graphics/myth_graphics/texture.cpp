@@ -1,6 +1,7 @@
 
 #include <myth\debug\assert.h>
 #include <myth\graphics\texture.h>
+#include <cstdio>
 #include <SOIL.h>
 
 using namespace myth::graphics;

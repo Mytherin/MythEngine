@@ -176,7 +176,7 @@ namespace myth
 					current = current->next;
 				}
 				Assert(false,L"CONTAINER ERROR: Element not found in the dictionary.");
-				return *((T*)NULL);
+				return *((T*)0);
 			}
 
 			//! Attempts to find the item belonging to the given key. Returns whether or nor the item is present.

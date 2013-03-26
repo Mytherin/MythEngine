@@ -43,7 +43,7 @@
     <LibraryPath>$(OutDir);$(OPENGL)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(MYTHERIN)Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(MYTHERIN)Include;$(OPENGL)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(OPENGL)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

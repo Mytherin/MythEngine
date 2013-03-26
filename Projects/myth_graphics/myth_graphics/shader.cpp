@@ -2,7 +2,7 @@
 #include <myth\debug\assert.h>
 #include <myth\graphics\shader.h>
 #include <myth\graphics\shaderprogram.h>
-#include <fstream>
+#include <sstream>
 
 using namespace myth::graphics;
 

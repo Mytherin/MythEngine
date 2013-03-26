@@ -8,6 +8,7 @@
 #include <myth\io\stringext.h>
 
 #include <myth\assets\assetmanager.h>
+#include <sstream>
 
 using namespace glm;
 using namespace myth::graphics;

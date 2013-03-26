@@ -1,5 +1,7 @@
 
 
+#pragma once
+
 namespace myth
 {
 	namespace input
@@ -12,6 +14,7 @@ namespace myth
 		const keycode MOUSE_MIDDLE = 0x04;
 		const keycode MOUSE_SCROLLUP = 0x08;
 		const keycode MOUSE_SCROLLDOWN = 0x10;
+		const keycode MOUSE_XBUTTON0 = 0x1F;
 		const keycode MOUSE_XBUTTON1 = 0x20;
 		const keycode MOUSE_XBUTTON2 = 0x21;
 		const keycode MOUSE_XBUTTON3 = 0x22;

@@ -1,8 +1,9 @@
 
 #include <myth\debug\assert.h>
-
+#include <cstdio>
 #include <myth\os\windows\win32graphicsmanager.h>
 using namespace myth::os::windows;
+
 
 Win32GraphicsManager::Win32GraphicsManager(HWND hwnd):
 	m_hwnd(hwnd)

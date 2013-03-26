@@ -1,5 +1,6 @@
 
 #include <myth\debug\assert.h>
+#include <myth\input\keyvalues.h>
 #include <myth\os\windows\win32filemanager.h>
 #include <myth\os\windows\win32windowmanager.h>
 
@@ -304,9 +305,9 @@ LRESULT Win32WindowManager::MessagePump(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_MBUTTONUP:
 		m_input.MouseRelease(myth::input::MOUSE_MIDDLE); break;
 	case WM_XBUTTONDOWN:
-		m_input.MouseClick(myth::input::MOUSE_XBUTTON + HIWORD(wParam)); break;
+		m_input.MouseClick(myth::input::MOUSE_XBUTTON0 + HIWORD(wParam)); break;
 	case WM_XBUTTONUP:
-		m_input.MouseRelease(myth::input::MOUSE_XBUTTON + HIWORD(wParam)); break;
+		m_input.MouseRelease(myth::input::MOUSE_XBUTTON0 + HIWORD(wParam)); break;
 	case WM_MOUSEMOVE:
 		m_input.MoveMouse(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
 		break;
