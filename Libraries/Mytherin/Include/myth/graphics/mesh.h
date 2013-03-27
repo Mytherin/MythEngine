@@ -11,6 +11,7 @@
 #include <assimp\scene.h>      
 #include <assimp\postprocess.h> 
 
+#include <myth\assets\asset.h>
 #include <myth\graphics\material.h>
 #include <myth\graphics\modelmesh.h>
 #include <myth\graphics\shaderprogram.h>
@@ -21,14 +22,17 @@ namespace myth
 {
 	namespace graphics
 	{
-		class declspec_graphics Mesh
+		class declspec_graphics Mesh : public myth::assets::FileAsset
 		{
 		public:
-			Mesh();
+			Mesh(myth::assets::FilePath *assetData, int package);
 
 			~Mesh();
-
-			bool LoadMesh(const std::string& Filename);
+			
+			virtual void LoadFromFile(std::string filepath);
+			virtual void ReloadFromFile(std::string filepath);
+			virtual void Destroy();
+			virtual bool IsLoaded();
 
 			void Render(ShaderProgram& program);
 
@@ -46,7 +50,6 @@ namespace myth
 			bool InitFromScene(const aiScene* pScene, const std::string& Filename);
 			void InitMesh(unsigned int Index, const aiMesh* paiMesh);
 			bool InitMaterials(const aiScene* pScene, const std::string& Filename);
-			void Clear();
 
 			unsigned int m_meshCount;
 			unsigned int m_materialCount;

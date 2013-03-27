@@ -4,8 +4,8 @@
 
 using namespace myth::graphics;
 
-Mesh::Mesh() :
-	m_meshes(0),m_textures(0),m_materials(0)
+Mesh::Mesh(myth::assets::FilePath *assetData, int package) :
+	FileAsset(assetData,package),m_meshes(0),m_textures(0),m_materials(0)
 {
 
 }
@@ -13,11 +13,34 @@ Mesh::Mesh() :
 
 Mesh::~Mesh()
 {
-	Clear();
+	Destroy();
 }
 
 
-void Mesh::Clear()
+void Mesh::LoadFromFile(std::string filepath)
+{
+	bool success = false;
+	Assimp::Importer importer;
+
+	const aiScene* scene = importer.ReadFile(filepath.c_str(), aiProcess_Triangulate);
+
+	if (scene) 
+	{
+		InitFromScene(scene, filepath);
+	}
+	else
+	{
+		printf("MESH LOAD ERROR: Error loading mesh '%s': '%s'\n", filepath.c_str(), importer.GetErrorString());
+	}
+}
+
+void Mesh::ReloadFromFile(std::string filepath)
+{
+	Destroy();
+	LoadFromFile(filepath);
+}
+
+void Mesh::Destroy()
 {
 	if (m_meshes) delete [] m_meshes;
 	if (m_textures) delete [] m_textures;
@@ -28,25 +51,9 @@ void Mesh::Clear()
 	m_materials = 0;
 }
 
-
-bool Mesh::LoadMesh(const std::string& filename)
+bool Mesh::IsLoaded()
 {
-	Clear();
-
-	bool success = false;
-	Assimp::Importer importer;
-
-	const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate);
-
-	if (scene) 
-	{
-		return InitFromScene(scene, filename);
-	}
-	else
-	{
-		printf("MESH LOAD ERROR: Error loading mesh '%s': '%s'\n", filename.c_str(), importer.GetErrorString());
-		return false;
-	}
+	return (m_meshes);
 }
 
 bool Mesh::InitFromScene(const aiScene* scene, const std::string& filename)
@@ -141,13 +148,15 @@ bool Mesh::InitMaterials(const aiScene* scene, const std::string& filename)
 			if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) 
 			{
 				std::string FullPath = Dir + "/" + Path.data;
-				m_textures[i] = Texture(GL_TEXTURE_2D, FullPath.c_str());
+				m_textures[i] = Texture2D(new myth::assets::FilePath(FullPath),0);
 
-				if (!m_textures[i].Load()) 
+				m_textures[i].Load();
+
+				if (!m_textures[i].IsLoaded()) 
 				{
 					printf("TEXTURE LOADING ERROR: Error loading texture '%s', loading default texture.\n", FullPath.c_str());
 					// Load an error texture in case the model does not include its own texture
-					m_textures[i] = Texture(GL_TEXTURE_2D, "error.png");
+					m_textures[i] = Texture2D(new myth::assets::FilePath("error.png"),0);
 
 					m_textures[i].Load();
 					success = false;
@@ -166,7 +175,7 @@ bool Mesh::InitMaterials(const aiScene* scene, const std::string& filename)
 			m_materials[i].Specular_Color = Vector3F(mcolor.r,mcolor.g,mcolor.b);
 		if (AI_SUCCESS == pMaterial->Get(AI_MATKEY_COLOR_AMBIENT,mcolor))
 			m_materials[i].Ambient_Color = Vector3F(mcolor.r,mcolor.g,mcolor.b);
-		
+
 		aiString mstring = aiString();
 		if (AI_SUCCESS == pMaterial->Get(AI_MATKEY_NAME,mstring))
 			m_materials[i].Name = std::string(mstring.C_Str());

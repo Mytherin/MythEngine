@@ -7,7 +7,7 @@
 using namespace myth::graphics;
 
 Shader::Shader(GLenum shaderType,myth::assets::AssetData *assetData, int package) :
-	Asset(assetData,package), m_shaderType(shaderType),m_shaderHandle(0)
+	SourceAsset(assetData,package), m_shaderType(shaderType),m_shaderHandle(0)
 {
 }
 

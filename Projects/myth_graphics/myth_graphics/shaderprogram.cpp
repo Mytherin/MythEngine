@@ -16,7 +16,7 @@ using namespace myth::io;
 using namespace myth::assets;
 
 ShaderProgram::ShaderProgram(myth::assets::AssetData *assetData, int package) : 
-	Asset(assetData,package)
+	SourceAsset(assetData,package)
 {
 	m_linked = false;
 	m_shaderProgram = glCreateProgram();
@@ -66,6 +66,7 @@ bool ShaderProgram::IsLoaded()
 void ShaderProgram::AttachShader(Shader& shader)
 {
 	Assert(!m_shaders.Contains(&shader),"SHADER ATTACHING ERROR: Attempt to attach a shader that was already attached.");
+	if (!shader.IsLoaded()) shader.Load();
 	glAttachShader(m_shaderProgram,shader.id());
 	m_shaders.Add(&shader);
 }

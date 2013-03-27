@@ -33,10 +33,10 @@ namespace myth
 		The attribute "Normal" refers to the vertex normal as vec3
 		The attribute "TexCoord" refers to the texture coordinate of the vertex as vec2
 		*/
-		class declspec_graphics ShaderProgram : public myth::assets::Asset
+		class declspec_graphics ShaderProgram : public myth::assets::SourceAsset
 		{
 		public:
-			//! Empty Constructor
+			//! Initialization Constructor
 			ShaderProgram(myth::assets::AssetData *assetData, int package);
 			//! Destructor
 			~ShaderProgram();

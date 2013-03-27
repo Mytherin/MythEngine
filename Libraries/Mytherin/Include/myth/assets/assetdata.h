@@ -16,6 +16,7 @@ namespace myth
 			virtual ~AssetData(){}
 
 			virtual std::string GetSource() = 0;
+			std::string AsString() { return m_str;}
 		protected:
 			std::string m_str;
 		};

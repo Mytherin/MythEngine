@@ -25,7 +25,7 @@ namespace myth
 		const int DefaultSamplerCount = 4;
 
 		//! The shader object represents a GLSL shader program
-		class declspec_graphics Shader : public myth::assets::Asset
+		class declspec_graphics Shader : public myth::assets::SourceAsset
 		{
 		public:
 			Shader(GLenum shaderType,myth::assets::AssetData *assetData, int package);

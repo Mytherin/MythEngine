@@ -11,35 +11,51 @@
 #include <GL\GL.h>
 #include <GL\GLU.h>
 
+#include <myth\assets\asset.h>
+
 namespace myth
 {
 	namespace graphics
 	{
 		//! The texture object representing a 2D image [Texture2D]
-		struct declspec_graphics Texture
+		class declspec_graphics Texture : public myth::assets::FileAsset
 		{
 		public:
-			//! Empty constructor
+			//! Empty Constructor
 			Texture();
-			//! Initialization constructor, loads a texture from a specified file
-			Texture(GLenum textureType, const char* filename);
-			//! Initialization constructor, creates a 2D texture with the specified with and height and the specified format
+			//! Initialization constructor
+			Texture(GLenum textureType, myth::assets::FilePath *assetData, int package);
+			//! Initialization constructor, creates a 2D texture with the specified width and height and the specified format
 			Texture(int width, int height, GLenum format);
 			//! Destructor
 			~Texture();
 
-			bool Load();
-			void Unload();
+			virtual void LoadFromFile(std::string filepath);
+			virtual void ReloadFromFile(std::string filepath);
+			virtual void Destroy();
+			virtual bool IsLoaded();
 
 			GLuint id(){return m_texture;}
 
 			//! Binds the texture to the specified texture slot, a simple enum that indicates which texture # it is, starting at GL_TEXTURE0 
 			void Bind(int index) const;
 		private:
-			const char* m_filename;
-
 			GLenum m_textureType;
 			GLuint m_texture;
+		};
+
+		class Texture2D : public Texture
+		{
+		public:
+			Texture2D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_2D,assetData,package){}
+			~Texture2D(){}
+		};
+		
+		class Texture3D : public Texture
+		{
+		public:
+			Texture3D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_3D,assetData,package){}
+			~Texture3D(){}
 		};
 	}
 }

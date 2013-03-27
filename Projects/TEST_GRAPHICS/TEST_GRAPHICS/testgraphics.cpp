@@ -42,22 +42,10 @@ bool drag;
 
 void TestGraphics::LoadContent()
 {
-	//program = new ShaderProgram();
-	//program->LoadShaderFromFile(GL_VERTEX_SHADER,"specularspotlightshadow.vert");
-	//program->LoadShaderFromFile(GL_FRAGMENT_SHADER,"specularspotlightshadow.frag");
-	//program->Link();
-
 	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("specularspotlightshadow.vert"));
 	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("specularspotlightshadow.frag"));
-
-	g_assetManager.GetAsset(vertexShader)->Load();
-	g_assetManager.GetAsset(fragmentShader)->Load();
-
 	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 
-	//int shaderProgram = g_assetManager.AddAsset(ASSET_SHADER_PROGRAM,source("v=\"specularspotlightshadow.vert\"; f=\"specularspotlightshadow.frag\";"));
-
-	//HShaderProgram handle = g_assetManager.GetHandle<ShaderProgram>(shaderProgram);
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
 	program->Load();
@@ -67,7 +55,7 @@ void TestGraphics::LoadContent()
 
 	program->PrintUniforms();
 
-	texture = new Texture(GL_TEXTURE_2D,"error.png");
+	texture = new Texture2D(new FilePath("error.png"),0);
 	texture->Load();
 
 	Material *material = new Material();
@@ -78,11 +66,9 @@ void TestGraphics::LoadContent()
 	material->Shininess = 1;
 	material->Shininess_Strength = 10;
 
-	mesh = new Mesh();
-	//mesh->LoadMesh("phoenix_ugv.md2");
-	mesh->LoadMesh("Plane.dae");
+	mesh = new Mesh(new FilePath("Plane.dae"),0);
+	mesh->Load();
 	mesh->SetMaterial(*material);
-	//mesh->LoadTexture(*texture);
 
 
 	camera = new Camera();
