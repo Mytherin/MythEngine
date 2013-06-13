@@ -25,8 +25,6 @@ namespace myth
 			Texture();
 			//! Initialization constructor
 			Texture(GLenum textureType, myth::assets::FilePath *assetData, int package);
-			//! Initialization constructor, creates a 2D texture with the specified width and height and the specified format
-			Texture(int width, int height, GLenum format);
 			//! Destructor
 			~Texture();
 
@@ -44,11 +42,23 @@ namespace myth
 			GLuint m_texture;
 		};
 
+		enum TextureOptions
+		{
+			TEXTURE_WRAP_REPEAT = 0x01,
+			TEXTURE_MINMAG_NEAREST = 0x02,
+			TEXTURE_DEPTH_INTENSITY = 0x04,
+			TEXTURE_COMPAREMODE_RTOTEXTURE = 0x08,
+			TEXTURE_COMPAREFUNC_LEQUAL = 0xF0
+		};
+
 		class Texture2D : public Texture
 		{
 		public:
 			Texture2D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_2D,assetData,package){}
 			~Texture2D(){}
+
+			//! Generates a 2D texture with a specified with and height using the specified data type (e.g. GL_RGBA)
+			static GLuint GenerateTexture(unsigned int width, unsigned int height, GLenum internalFormat, GLenum dataType, GLenum storageType, GLenum textureOptions);
 		};
 		
 		class Texture3D : public Texture

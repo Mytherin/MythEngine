@@ -90,14 +90,16 @@ copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
     <None Include="ambient.vert" />
     <None Include="sample.frag" />
     <None Include="sample.vert" />
+    <None Include="shadowlightningtechnique.frag" />
+    <None Include="shadowlightningtechnique.vert" />
+    <None Include="shadowmaptechnique.frag" />
+    <None Include="shadowmaptechnique.vert" />
     <None Include="specular.frag" />
     <None Include="specular.vert" />
     <None Include="specularpoint.frag" />
     <None Include="specularpoint.vert" />
     <None Include="specularspotlight.frag" />
     <None Include="specularspotlight.vert" />
-    <None Include="specularspotlightshadow.frag" />
-    <None Include="specularspotlightshadow.vert" />
     <None Include="uishader.frag" />
     <None Include="uishader.vert" />
   </ItemGroup>

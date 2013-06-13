@@ -24,6 +24,7 @@
 #include <myth\phys\rectangle.h>
 #include <myth\phys\tetrahedron.h>
 #include <myth\phys\triangle.h>
+#include <myth\graphics\shadowfbo.h>
 
 using namespace myth::assets;
 using namespace myth::input;
@@ -35,23 +36,31 @@ Texture *texture;
 Framebuffer *frameBuffer;
 SpotLight* spotLight, *spotLight2;
 ShaderProgram *program;
+ShaderProgram *shadowProgram;
 Camera *camera;
+Camera *lightCamera;
+
 Mesh *mesh;
 Light *lights;
 bool drag;
 
 void TestGraphics::LoadContent()
 {
-	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("specularspotlightshadow.vert"));
-	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("specularspotlightshadow.frag"));
-	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 
+	int vertexShaderS = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowmaptechnique.vert"));
+	int fragmentShaderS = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowmaptechnique.frag"));
+	int shaderProgramS = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShaderS) + ";" + std::to_string(fragmentShaderS)));
+	shadowProgram = g_assetManager.GetAsset<ShaderProgram>(shaderProgramS);
+
+	shadowProgram->Load();
+
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowlightningtechnique.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowlightningtechnique.frag"));
+	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
 	program->Load();
 
-	frameBuffer = new Framebuffer(GL_DEPTH_BUFFER);
-	frameBuffer->Init(1024,760);
 
 	program->PrintUniforms();
 
@@ -71,9 +80,6 @@ void TestGraphics::LoadContent()
 	mesh->SetMaterial(*material);
 
 
-	camera = new Camera();
-	camera->Perspective(75.0f,16.0f / 9.0f,0.1f,100.0f);
-
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_BUFFER_BIT);
 	glDepthFunc(GL_LEQUAL);
@@ -84,8 +90,8 @@ void TestGraphics::LoadContent()
 	spotLight = new SpotLight();
 	spotLight->ambientColor = Vector3(0.2f);
 	spotLight->diffuseColor = Vector3(1.0f);
-	spotLight->location = Vector3(0,0,5);
-	spotLight->direction = Vector3(0,0,-1);
+	spotLight->location = Vector3(0,0,-10);
+	spotLight->direction = Vector3(0,0,1);
 	spotLight->innerangle = 0.99f;
 	spotLight->outerangle = 0.88f;
 	spotLight->Constant = 1;
@@ -93,6 +99,17 @@ void TestGraphics::LoadContent()
 	spotLight->Exp = 0.0f;
 
 	g_lightManager.AddLight(spotLight);
+
+	
+
+	camera = new Camera();
+	camera->Perspective(75.0f,16.0f / 9.0f,1.0f,100.0f);
+
+	lightCamera = new Camera();
+	lightCamera->Perspective(75.0f,16.0f / 9.0f,1.0f,100.0f);
+	lightCamera->SetPosition(spotLight->location);
+	lightCamera->SetDirection(spotLight->direction);
+	lightCamera->SetUp(glm::vec3(0,1,0));
 
 	/*
 	spotLight2 = new SpotLight();
@@ -107,6 +124,14 @@ void TestGraphics::LoadContent()
 	spotLight2->Exp = 0.05f;
 
 	g_lightManager.AddLight(spotLight2);*/
+	
+	camera->SetPosition(spotLight->location);
+	camera->SetDirection(spotLight->direction);
+	camera->SetUp(glm::vec3(0,1,0));
+
+	
+	frameBuffer = new Framebuffer(FRAMEBUFFER_DEPTH);
+	frameBuffer->Init(1024,760);
 }
 
 void TestGraphics::UnloadContent()
@@ -205,45 +230,45 @@ void TestGraphics::Draw(float t)
 
 	//g_renderingManager.RenderPrimitive(myth::phys::Rectangle(p,Point(p.x+1,p.y,p.z),Point(p.x,p.y+1,p.z)));
 
-	Camera lightCamera;
 	
-	lightCamera.Perspective(75.0f,16.0f / 9.0f,0.1f,100.0f);
-	lightCamera.SetPosition(spotLight->location);
-	lightCamera.SetDirection(spotLight->direction);
-	lightCamera.SetUp(glm::vec3(0,1,0));
 
-	program->Activate();
-	program->BindLights();
-	program->BindCamera(lightCamera);
-	program->BindModel(glm::mat4(1.0f));
+	shadowProgram->Activate();
+	//shadowProgram->BindLights();
+	shadowProgram->BindCamera(*lightCamera);
+	shadowProgram->BindModel(glm::mat4(1.0f));
 
-	Point p(spotLight->location.x,spotLight->location.y,spotLight->location.z);
+	frameBuffer->Bind();
 
-	frameBuffer->StartWrite();
-	
 	glClearColor(0.0f,0.0f,1.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	
-	program->BindTexture(texture->id(),0);
-	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*program);
 
-	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*program);
+	shadowProgram->BindTexture(texture->id(),0);
 
-	frameBuffer->EndWrite();
-	
+	shadowProgram->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
+	mesh->Render(*shadowProgram);
+
+	shadowProgram->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
+	mesh->Render(*shadowProgram);
+
+
+	frameBuffer->Unbind();
+
 	glClearColor(1.0f,0.5f,0.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	
+
+	program->Activate();
+	program->NSetUniform("LightMVP",lightCamera->ViewProjectionMatrix());
+	program->BindLights();
 	program->BindCamera(*camera);
-	program->BindTexture(frameBuffer->GetDepth().id(),0);
+	program->BindModel(glm::mat4(1.0f));
+	program->BindTexture(frameBuffer->GetDepth(),0);
 
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
 
 	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
+
 
 	ShaderProgram::Deactivate();
 }

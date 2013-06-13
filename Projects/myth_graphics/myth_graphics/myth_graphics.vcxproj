@@ -17,9 +17,11 @@
     <ClCompile Include="lightmanager.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="modelmesh.cpp" />
+    <ClCompile Include="renderbuffer.cpp" />
     <ClCompile Include="renderingmanager.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
+    <ClCompile Include="shadowmapfbo.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +39,7 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\materials\materialtypes.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\mesh.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\modelmesh.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\renderbuffer.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\renderingmanager.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shader.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderconstants.h" />

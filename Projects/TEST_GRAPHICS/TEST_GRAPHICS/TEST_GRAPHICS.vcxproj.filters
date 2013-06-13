@@ -64,10 +64,16 @@
     <None Include="specularspotlight.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="specularspotlightshadow.frag">
+    <None Include="shadowlightningtechnique.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="specularspotlightshadow.vert">
+    <None Include="shadowmaptechnique.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shadowmaptechnique.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shadowlightningtechnique.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

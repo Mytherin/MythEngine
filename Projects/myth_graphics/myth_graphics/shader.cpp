@@ -167,7 +167,6 @@ GLuint Shader::Create(GLenum type, std::string source)
 			printf(log);
 			free(log);
 		}
-		printf(ss.str().c_str());
 		Assert(0,"SHADER CREATION ERROR: Shader compilation failed.");
 		return 0;
 	}

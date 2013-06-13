@@ -17,23 +17,6 @@ Texture::Texture(GLenum textureType, myth::assets::FilePath *assetData, int pack
 {
 }
 
-Texture::Texture(int width, int height, GLenum format) : 
-	FileAsset(0,0),m_textureType(GL_TEXTURE_2D),m_texture(0)
-{
-	glGenTextures(1,&m_texture); //generate a texture
-
-	glBindTexture(GL_TEXTURE_2D,m_texture); //bind
-
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_FLOAT, NULL); //set the data that will be stored within this texture
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //set the interpolation method used for the texture
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //clamp any values written into the texture to the edge
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glBindTexture(GL_TEXTURE_2D,0); //unbind
-}
-
 Texture::~Texture()
 {
 }
@@ -72,4 +55,43 @@ void Texture::Bind(int index) const
 {
 	glActiveTexture(GL_TEXTURE0 + index);
 	glBindTexture(m_textureType,m_texture);
+}
+
+GLuint Texture2D::GenerateTexture(unsigned int width, unsigned int height, GLenum internalFormat, GLenum format, GLenum storageType, GLenum textureOptions)
+{
+	GLuint texture(0);
+	glGenTextures(1,&texture); //generate a texture
+
+	glBindTexture(GL_TEXTURE_2D,texture); //bind
+
+	if (textureOptions & TEXTURE_WRAP_REPEAT)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+	if (textureOptions & TEXTURE_MINMAG_NEAREST)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	if (textureOptions & TEXTURE_DEPTH_INTENSITY)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
+	}
+	if (textureOptions & TEXTURE_COMPAREMODE_RTOTEXTURE)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+	}
+	if (textureOptions & TEXTURE_COMPAREFUNC_LEQUAL)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, storageType, NULL); //set the data that will be stored within this texture
+	
+	glBindTexture(GL_TEXTURE_2D,0); //unbind
+
+	return texture;
 }
