@@ -54,13 +54,13 @@ void TestGraphics::LoadContent()
 
 	shadowProgram->Load();
 
-	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowlightningtechnique.vert"));
-	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowlightningtechnique.frag"));
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowmaptechnique.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowmaptechnique.frag"));
 	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
 	program->Load();
-
+	
 
 	program->PrintUniforms();
 
@@ -147,19 +147,27 @@ void TestGraphics::Input(myth::input::InputHandler& input)
 
 		if (inputEvent.IsKeyPress(KEY_ARROWLEFT) || inputEvent.IsKeyPress(KeyFromChar('A')))
 		{
+			//spotLight->location.x--;
 			camera->MoveSideways(-1);
+			//lightCamera->MoveSideways(-1);
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWRIGHT) || inputEvent.IsKeyPress(KeyFromChar('D')))
 		{
+			//spotLight->location.x++;
 			camera->MoveSideways(1);
+			//lightCamera->MoveSideways(1);
 		}
 		else  if (inputEvent.IsKeyPress(KEY_ARROWUP) || inputEvent.IsKeyPress(KeyFromChar('W')))
 		{
 			camera->MoveForward(1);
+			//lightCamera->MoveForward(1);
+			//spotLight->location.z++;
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWDOWN) || inputEvent.IsKeyPress(KeyFromChar('S')))
 		{
 			camera->MoveForward(-1);
+			//lightCamera->MoveForward(-1);
+			//spotLight->location.z--;
 		}
 		else if (inputEvent.IsKeyPress(KEY_SPACEBAR))
 		{
@@ -200,48 +208,13 @@ void TestGraphics::Draw(float t)
 
 	float offsetX = cos(ang)*10;
 	float offsetZ = sin(ang)*10;
-
-
-	//program->Activate();
-	//program->BindLights();
-	//program->BindCamera(*camera);
-	//program->BindModel(glm::mat4(1.0f));
-
-	//Point p(spotLight->location.x,spotLight->location.y,spotLight->location.z);
-
-	//frameBuffer->StartWrite();
-	//
-	//glClearColor(1.0f,0.0f,1.0f,1);
-	//glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	//
-	//program->BindTexture(texture->id(),0);
-
-	//g_renderingManager.RenderPrimitive(Triangle(p,Point(p.x+1,p.y,p.z),Point(p.x,p.y+1,p.z)));
-
-	//frameBuffer->EndWrite();
-	//
-	////program->BindTexture(frameBuffer->Texture(),0);
-
-	//glClearColor(1.0f,0.5f,0.0f,1);
-	//glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
-	//program->BindTexture(frameBuffer->GetTexture().id(),0);
-
-	//g_renderingManager.RenderPrimitive(myth::phys::Rectangle(p,Point(p.x+1,p.y,p.z),Point(p.x,p.y+1,p.z)));
-
 	
-
 	shadowProgram->Activate();
-	//shadowProgram->BindLights();
 	shadowProgram->BindCamera(*lightCamera);
 	shadowProgram->BindModel(glm::mat4(1.0f));
-
 	frameBuffer->Bind();
 
-	//glClearColor(0.0f,0.0f,1.0f,1);
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	//shadowProgram->BindTexture(texture->id(),0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shadowProgram->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*shadowProgram);
@@ -249,9 +222,8 @@ void TestGraphics::Draw(float t)
 	shadowProgram->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*shadowProgram);
 
-
 	frameBuffer->Unbind();
-	ShaderProgram::Deactivate();
+	shadowProgram->Deactivate();
 
 	glClearColor(1.0f,0.5f,0.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -261,8 +233,8 @@ void TestGraphics::Draw(float t)
 	program->BindLights();
 	program->BindCamera(*camera);
 	program->BindModel(glm::mat4(1.0f));
-	program->BindTexture(frameBuffer->GetDepth(),0);
-	program->BindTexture(texture->id(),1);
+	program->Bind2DTexture(frameBuffer->GetDepth(),0);
+	program->Bind2DTexture(texture->id(),1);
 
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
@@ -270,5 +242,5 @@ void TestGraphics::Draw(float t)
 	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
 
-	ShaderProgram::Deactivate();
+	program->Deactivate();
 }

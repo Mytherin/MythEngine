@@ -16,6 +16,7 @@
 #include <myth\graphics\shaderconstants.h>
 #include <myth\graphics\material.h>
 #include <myth\graphics\shader.h>
+#include <myth\graphics\texture.h>
 #include <myth\graphics\vertex.h>
 #include <myth\assets\asset.h>
 #include <myth\assets\resourcelinks.h>
@@ -114,8 +115,17 @@ namespace myth
 			* Note that not all lights may be bound, depending on the Max<type>Lights property within the shaders.
 			*/
 			void BindLights();
+
+			//! Binds a texture class to the specified sampler slot of the shader program.
+			void BindTexture(const Texture& texture, int index);
+
+			//! Binds a texture of the specified texture type to the specified sampler slot of the shader program.
+			void BindTexture(GLuint textureType, GLuint texture, int index);
+
 			//! Binds a 2D texture to the specified sampler slot of the shader program.
-			void BindTexture(GLuint texture, int index);
+			void Bind2DTexture(GLuint texture, int index);
+			//! Binds a 3D texture to the specified sampler slot of the shader program.
+			void Bind3DTexture(GLuint texture, int index);
 
 			//! Gets the index of the specified shader type, ranging from 0..4
 			int GetShaderIndex(GLenum shaderType) const;

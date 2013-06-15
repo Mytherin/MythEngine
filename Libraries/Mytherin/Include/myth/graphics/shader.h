@@ -22,7 +22,8 @@ namespace myth
 		const int DefaultDirectionalLights = 8;
 		const int DefaultPointLights = 8;
 		const int DefaultSpotLights = 8;
-		const int DefaultSamplerCount = 4;
+		const int DefaultSampler2DCount = 4;
+		const int DefaultSampler3DCount = 4;
 
 		//! The shader object represents a GLSL shader program
 		class declspec_graphics Shader : public myth::assets::SourceAsset
@@ -44,14 +45,16 @@ namespace myth
 			int MaxDirectionalLights() { return m_maxdirectionalLights;}
 			int MaxPointLights() { return m_maxpointLights;}
 			int MaxSpotLights() { return m_maxspotLights;}
-			int MaxSamplerCount() { return m_samplerCount;}
+			int MaxSampler2DCount() { return m_sampler2DCount;}
+			int MaxSampler3DCount() { return m_sampler3DCount;}
 		private:
 			GLuint Create(GLenum type, std::string source);
 
 			int m_maxdirectionalLights;
 			int m_maxpointLights;
 			int m_maxspotLights;
-			int m_samplerCount;
+			int m_sampler2DCount;
+			int m_sampler3DCount;
 
 			GLuint m_shaderHandle;
 			GLenum m_shaderType;

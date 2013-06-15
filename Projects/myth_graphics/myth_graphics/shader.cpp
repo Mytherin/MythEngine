@@ -75,7 +75,8 @@ GLuint Shader::Create(GLenum type, std::string source)
 	if (!GetDefine("MaxDirectionalLights",source,&m_maxdirectionalLights)) m_maxdirectionalLights = DefaultDirectionalLights;
 	if (!GetDefine("MaxPointLights",source,&m_maxpointLights)) m_maxpointLights = DefaultPointLights;
 	if (!GetDefine("MaxSpotLights",source,&m_maxspotLights)) m_maxspotLights = DefaultSpotLights;
-	if (!GetDefine("MaxSamplers",source,&m_samplerCount)) m_samplerCount = DefaultSamplerCount;
+	if (!GetDefine("MaxSampler2D",source,&m_sampler2DCount)) m_sampler2DCount = DefaultSampler2DCount;
+	if (!GetDefine("MaxSampler3D",source,&m_sampler3DCount)) m_sampler3DCount = DefaultSampler3DCount;
 	
 	//prepend uniform variables used in the shader (matrices, samplers, light information)
 	std::stringstream ss;
@@ -83,7 +84,8 @@ GLuint Shader::Create(GLenum type, std::string source)
 	ss << "#define MaxDirectionalLights "   << m_maxdirectionalLights <<   "\n"; 
 	ss << "#define MaxPointLights "         << m_maxpointLights       <<   "\n";
 	ss << "#define MaxSpotLights "          << m_maxspotLights        <<   "\n";
-	ss << "#define MaxSamplers "            << m_samplerCount          <<   "\n";
+	ss << "#define MaxSampler2D "           << m_sampler2DCount       <<   "\n";
+	ss << "#define MaxSampler3D "           << m_sampler3DCount       <<   "\n";
 	ss << 
 		"uniform int DirectionalLights;                                \n"
 		"uniform int PointLights;                                      \n"
@@ -142,7 +144,9 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"uniform vec3 EyePos;                                          \n"
 		"uniform vec3 EyeDir;                                          \n";
 	ss << 
-		"uniform sampler2D Sampler[" << m_samplerCount << "];    \n";
+		"uniform sampler2D Texture2D[" << m_sampler2DCount << "];    \n";
+	ss << 
+		"uniform sampler3D Texture3D[" << m_sampler3DCount << "];    \n";
 	std::string str = ss.str();
 
 	const GLchar *codeArray[] = {str.c_str(), source.c_str()};

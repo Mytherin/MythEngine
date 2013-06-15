@@ -20,7 +20,8 @@ namespace myth
 				delete [] directionalLight;
 				delete [] pointLight;
 				delete [] spotLight;
-				delete [] Sampler;
+				delete [] Sampler2D;
+				delete [] Sampler3D;
 			}
 
 			//matrix uniform locations
@@ -57,8 +58,10 @@ namespace myth
 			SpotLightUL *spotLight;
 
 			//texture sampler array
-			int samplerCount; //amount of samplers supported
-			int *Sampler; //array of uniform sampler locations (sampler2D)
+			int sampler2DCount; //amount of 2D samplers supported by this ShaderProgram
+			int sampler3DCount; //amount of 3D samplers supported by this ShaderProgram
+			int *Sampler2D; //array of uniform 2D sampler locations (sampler2D)
+			int *Sampler3D; //array of uniform 3D sampler locations (sampler3D)
 		};
 	}
 }

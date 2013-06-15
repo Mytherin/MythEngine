@@ -24,15 +24,38 @@ Texture::~Texture()
 
 void Texture::LoadFromFile(std::string filepath)
 {
-	glGenTextures(1,&m_texture);
-	m_texture = SOIL_load_OGL_texture(filepath.c_str(),SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,SOIL_FLAG_INVERT_Y);
-
-	DEBUGIF(m_texture == 0)
+	switch(m_textureType)
 	{
-		printf("TEXTURE LOAD ERROR: Failure to load texture \"%s\". Does the file with the specified filename exist and is it one of the supported formats by SOIL?\n",filepath);
+		case GL_TEXTURE_2D:
+			m_texture = SOIL_load_OGL_texture(filepath.c_str(),SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,SOIL_FLAG_INVERT_Y);
 
-		Assert(0,"TEXTURE LOADING ERROR: Failure to load texture.");
+			DEBUGIF(m_texture == 0)
+			{
+				printf("TEXTURE LOAD ERROR: Failure to load texture \"%s\". Does the file with the specified filename exist and is it one of the supported formats by SOIL?\n",filepath);
+
+				Assert(0,"TEXTURE LOADING ERROR: Failure to load texture.");
+			}
+			return;
+		case GL_TEXTURE_3D:
+			m_texture = SOIL_load_OGL_single_cubemap(
+					filepath.c_str(),
+					"UWSEND",
+					SOIL_LOAD_AUTO,
+					SOIL_CREATE_NEW_ID,
+					SOIL_FLAG_MIPMAPS |  SOIL_FLAG_DDS_LOAD_DIRECT
+				);
+			
+			DEBUGIF(m_texture == 0)
+			{
+				printf("TEXTURE LOAD ERROR: Failure to load texture \"%s\". Does the file with the specified filename exist and is it one of the supported formats by SOIL?\n",filepath);
+
+				Assert(0,"TEXTURE LOADING ERROR: Failure to load texture.");
+			}
+			return;
+		default:
+			Assert(false,"TEXTURE LOAD ERROR: Invalid texture type specified.");
 	}
+
 }
 
 void Texture::ReloadFromFile(std::string filepath)

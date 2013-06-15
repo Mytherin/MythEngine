@@ -49,7 +49,7 @@ void main()
         specular += spotlightFactor * specularchange / attenuation;
 	}
 
-	FragColor = (ambient+diffuse + specular);// * texture2D(Sampler[0],TexCoord0.st);
+	FragColor = (ambient+diffuse + specular) * texture2D(Texture2D[0],TexCoord0.st);
 }
 
 

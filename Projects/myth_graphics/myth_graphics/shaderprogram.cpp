@@ -73,7 +73,8 @@ void ShaderProgram::AttachShader(Shader& shader)
 	Uniforms.maxdirectionalLights = max(Uniforms.maxdirectionalLights,shader.MaxDirectionalLights());
 	Uniforms.maxspotLights = max(Uniforms.maxspotLights,shader.MaxSpotLights());
 	Uniforms.maxpointLights = max(Uniforms.maxpointLights,shader.MaxPointLights());
-	Uniforms.samplerCount = max(Uniforms.maxdirectionalLights,shader.MaxSamplerCount());
+	Uniforms.sampler2DCount = max(Uniforms.maxdirectionalLights,shader.MaxSampler2DCount());
+	Uniforms.sampler3DCount = max(Uniforms.maxdirectionalLights,shader.MaxSampler3DCount());
 }
 
 void ShaderProgram::RemoveShader(Shader& shader)
@@ -385,12 +386,46 @@ void ShaderProgram::BindLights()
 	}
 }
 
-void ShaderProgram::BindTexture(GLuint texture, int index)
+void ShaderProgram::BindTexture(const Texture& texture, int index)
 {
-	Assert(index <= Uniforms.samplerCount,"Attempted to bind a texture to a texture index that was out of range of the valid texture indices of the shaderprogram.");
+	BindTexture(texture.type(),texture.id(),index);
+}
+
+void ShaderProgram::BindTexture(GLuint textureType, GLuint texture, int index)
+{
+	switch(textureType)
+	{
+		case GL_TEXTURE_2D:
+			Bind2DTexture(texture,index);
+			return;
+		case GL_TEXTURE_3D:
+			Bind3DTexture(texture,index);
+			return;
+		default:
+			Assert(false,"TEXTURE BINDING ERROR: Attempting to bind a texture with an unknown texture type");
+	}
+}
+
+
+void ShaderProgram::Bind2DTexture(GLuint texture, int index)
+{
+	Assert(index <= Uniforms.sampler2DCount,"Attempted to bind a texture to a texture index that was out of range of the valid texture indices of the shaderprogram.");
 	glActiveTexture(GL_TEXTURE0 + index);
+	
 	glBindTexture(GL_TEXTURE_2D,texture);
-	SetUniform(Uniforms.Sampler[index],index);
+	
+	SetUniform(Uniforms.Sampler2D[index],index);
+}
+
+
+void ShaderProgram::Bind3DTexture(GLuint texture, int index)
+{
+	Assert(index <= Uniforms.sampler3DCount,"Attempted to bind a texture to a texture index that was out of range of the valid texture indices of the shaderprogram.");
+	glActiveTexture(GL_TEXTURE0 + index);
+	
+	glBindTexture(GL_TEXTURE_3D,texture);
+	
+	SetUniform(Uniforms.Sampler3D[index],index);
 }
 
 void ShaderProgram::GenerateUniformLocations()
@@ -459,12 +494,21 @@ void ShaderProgram::GenerateUniformLocations()
 	}
 
 
-	if (Uniforms.samplerCount > 0)
+	if (Uniforms.sampler2DCount > 0)
 	{
-		Uniforms.Sampler = new int[Uniforms.samplerCount];
-		for(int i = 0; i < Uniforms.samplerCount; i++)
+		Uniforms.Sampler2D = new int[Uniforms.sampler2DCount];
+		for(int i = 0; i < Uniforms.sampler2DCount; i++)
 		{
-			Uniforms.Sampler[i] = GetUniformLocation("Sampler[","]",i,ss);
+			Uniforms.Sampler2D[i] = GetUniformLocation("Texture2D[","]",i,ss);
+		}
+	}
+
+	if (Uniforms.sampler3DCount > 0)
+	{
+		Uniforms.Sampler3D = new int[Uniforms.sampler3DCount];
+		for(int i = 0; i < Uniforms.sampler3DCount; i++)
+		{
+			Uniforms.Sampler3D[i] = GetUniformLocation("Texture3D[","]",i,ss);
 		}
 	}
 }

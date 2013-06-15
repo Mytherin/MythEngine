@@ -1,4 +1,6 @@
 
+#define MaxSpotLights 1
+
 in vec4 LightPos;
 in vec3 WorldPos0;
 in vec3 Normal0;
@@ -17,7 +19,7 @@ float GetShadowFactor(vec4 lightPosition)
 	float z = proj.z * 0.5 + 0.5;
 
 	//obtain the depth from the depth texture
-	float depth = texture(Sampler[0],UV).x;
+	float depth = texture(Texture2D[0],UV).x;
 
 	//if the depth of this texture is deeper than the stored depth, the pixel is behind an object, return 0.5
 	if (depth < (z + 0.0001))
@@ -67,5 +69,5 @@ void main()
         specular += spotlightFactor * specularchange / attenuation;
 	}
 
-	FragColor = (ambient+diffuse + specular) * GetShadowFactor(LightPos) * texture2D(Sampler[1],TexCoord0.st);
+	FragColor = (ambient+diffuse + specular) * GetShadowFactor(LightPos) * texture2D(Texture2D[1],TexCoord0.st);
 }

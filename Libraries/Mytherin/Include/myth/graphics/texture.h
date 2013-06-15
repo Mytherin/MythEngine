@@ -17,11 +17,11 @@ namespace myth
 {
 	namespace graphics
 	{
-		//! The texture object representing a 2D image [Texture2D]
+		//! The texture object representing a texture
 		class declspec_graphics Texture : public myth::assets::FileAsset
 		{
 		public:
-			//! Empty Constructor
+			//! Empty Constructor, creates a GL_TEXTURE_2D object with no AssetData specified
 			Texture();
 			//! Initialization constructor
 			Texture(GLenum textureType, myth::assets::FilePath *assetData, int package);
@@ -32,8 +32,9 @@ namespace myth
 			virtual void ReloadFromFile(std::string filepath);
 			virtual void Destroy();
 			virtual bool IsLoaded();
-
-			GLuint id(){return m_texture;}
+			
+			GLenum type() const{return m_textureType;}
+			GLuint id() const{return m_texture;}
 
 			//! Binds the texture to the specified texture slot, a simple enum that indicates which texture # it is, starting at GL_TEXTURE0 
 			void Bind(int index) const;
@@ -51,6 +52,7 @@ namespace myth
 			TEXTURE_COMPAREFUNC_LEQUAL = 0xF0
 		};
 
+		//! A 2D texture (image)
 		class Texture2D : public Texture
 		{
 		public:
@@ -61,10 +63,13 @@ namespace myth
 			static GLuint GenerateTexture(unsigned int width, unsigned int height, GLenum internalFormat, GLenum dataType, GLenum storageType, GLenum textureOptions);
 		};
 		
+		//! A 3D texture (cubemap)
 		class Texture3D : public Texture
 		{
 		public:
+			//! Initialization Constructor
 			Texture3D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_3D,assetData,package){}
+			//! Destructor
 			~Texture3D(){}
 		};
 	}
