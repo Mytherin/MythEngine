@@ -49,6 +49,9 @@ void Shader::Destroy()
 
 bool GetDefine(std::string defineName, std::string source, int* value)
 {
+	//search the text for a '#define <defineName> <value>' statement
+	//if such a statement exists, return true and return the value as an integer
+	//otherwise return false
 	std::string define = "#define " + defineName + " ";
 	int loc = source.find(define);
 	if (loc < source.size() - define.size() - 1)
@@ -68,21 +71,19 @@ GLuint Shader::Create(GLenum type, std::string source)
 
 	Assert(shader,"SHADER CREATION ERROR: Could not create a shader of the specified shader type.");
 
-	int directionalLights, pointLights, spotLights, textures;
-	
 	//parse shader source to find max lights, if the information is not there, add the default information
-	if (!GetDefine("MaxDirectionalLights",source,&directionalLights)) directionalLights = DefaultDirectionalLights;
-	if (!GetDefine("MaxPointLights",source,&pointLights)) pointLights = DefaultPointLights;
-	if (!GetDefine("MaxSpotLights",source,&spotLights)) spotLights = DefaultSpotLights;
-	if (!GetDefine("MaxSamplers",source,&textures)) textures = DefaultSamplerCount;
+	if (!GetDefine("MaxDirectionalLights",source,&m_maxdirectionalLights)) m_maxdirectionalLights = DefaultDirectionalLights;
+	if (!GetDefine("MaxPointLights",source,&m_maxpointLights)) m_maxpointLights = DefaultPointLights;
+	if (!GetDefine("MaxSpotLights",source,&m_maxspotLights)) m_maxspotLights = DefaultSpotLights;
+	if (!GetDefine("MaxSamplers",source,&m_samplerCount)) m_samplerCount = DefaultSamplerCount;
 	
 	//prepend uniform variables used in the shader (matrices, samplers, light information)
 	std::stringstream ss;
 	ss << "#version 150 \r\n";
-	ss << "#define MaxDirectionalLights "   << directionalLights <<   "\n"; 
-	ss << "#define MaxPointLights "         << pointLights       <<   "\n";
-	ss << "#define MaxSpotLights "          << spotLights        <<   "\n";
-	ss << "#define MaxSamplers "            << textures          <<   "\n";
+	ss << "#define MaxDirectionalLights "   << m_maxdirectionalLights <<   "\n"; 
+	ss << "#define MaxPointLights "         << m_maxpointLights       <<   "\n";
+	ss << "#define MaxSpotLights "          << m_maxspotLights        <<   "\n";
+	ss << "#define MaxSamplers "            << m_samplerCount          <<   "\n";
 	ss << 
 		"uniform int DirectionalLights;                                \n"
 		"uniform int PointLights;                                      \n"
@@ -108,7 +109,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"	vec3 Ld;                                                   \n"
 		"	vec3 Direction;                                            \n"
 		"};                                                            \n";
-	if (directionalLights > 0)
+	if (m_maxdirectionalLights > 0)
 		ss << "uniform DirectionalLight DL[MaxDirectionalLights];      \n";
 	ss << 
 		"struct PointLight                                             \n"
@@ -120,7 +121,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"	float Linear;                                              \n"
 		"	float Exp;                                                 \n"
 		"};                                                            \n";
-	if (pointLights > 0)
+	if (m_maxpointLights > 0)
 		ss << 	"uniform PointLight PL[MaxPointLights];                \n";
 	ss <<
 		"struct SpotLight                                              \n"
@@ -135,13 +136,13 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"	float Linear;                                              \n"
 		"	float Exp;                                                 \n"
 		"};                                                            \n";
-	if (spotLights > 0)
+	if (m_maxspotLights > 0)
 		ss << 	"uniform SpotLight SL[MaxSpotLights];                  \n";
 	ss << 		
 		"uniform vec3 EyePos;                                          \n"
 		"uniform vec3 EyeDir;                                          \n";
 	ss << 
-		"uniform sampler2D Sampler[" << textures << "];    \n";
+		"uniform sampler2D Sampler[" << m_samplerCount << "];    \n";
 	std::string str = ss.str();
 
 	const GLchar *codeArray[] = {str.c_str(), source.c_str()};

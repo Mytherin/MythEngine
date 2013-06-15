@@ -7,6 +7,7 @@ namespace myth
 {
 	namespace graphics
 	{
+		//! A struct that holds indices of specific uniform locations within a specific shader
 		struct UniformLocations
 		{
 		public:

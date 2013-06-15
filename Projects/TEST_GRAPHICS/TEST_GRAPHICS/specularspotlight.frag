@@ -1,9 +1,12 @@
 
+#define MaxSpotLights 1
+
 in vec3 WorldPos0;
 in vec2 TexCoord0;
 in vec3 Normal0;
+
 out vec4 FragColor;
-uniform sampler2D Sampler0;
+
 void main()
 {
     vec4 ambient = vec4(0.0);
@@ -27,7 +30,7 @@ void main()
         vec4 diffusechange = vec4(0.0);
         vec4 specularchange = vec4(0.0);
         ambientchange = vec4(SL[i].La * Material.Ka,1.0);
-        float diffuseFactor = dot(normalize(Normal0),-SL[i].Direction);
+        float diffuseFactor = dot(normalize(Normal0),SL[i].Direction);
         if (diffuseFactor > 0)
 		{
             diffusechange = vec4(diffuseFactor * SL[i].Ld * Material.Kd,1.0);
@@ -46,7 +49,7 @@ void main()
         specular += spotlightFactor * specularchange / attenuation;
 	}
 
-	FragColor = (ambient+diffuse + specular) * texture2D(Sampler0,TexCoord0.st);
+	FragColor = (ambient+diffuse + specular);// * texture2D(Sampler[0],TexCoord0.st);
 }
 
 

@@ -72,13 +72,12 @@ void TestGraphics::LoadContent()
 	material->Ambient_Color = Vector3F(1,1,1);
 	material->Diffuse_Color = Vector3F(1,1,1);
 	material->Specular_Color = Vector3F(0.5f,0.5f,0.5f);
-	material->Shininess = 1;
+	material->Shininess = 0;
 	material->Shininess_Strength = 10;
-
+	
 	mesh = new Mesh(new FilePath("Plane.dae"),0);
 	mesh->Load();
 	mesh->SetMaterial(*material);
-
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_BUFFER_BIT);
@@ -88,15 +87,15 @@ void TestGraphics::LoadContent()
 	drag = false;
 
 	spotLight = new SpotLight();
-	spotLight->ambientColor = Vector3(0.2f);
+	spotLight->ambientColor = Vector3(0.0f);
 	spotLight->diffuseColor = Vector3(1.0f);
 	spotLight->location = Vector3(0,0,-10);
 	spotLight->direction = Vector3(0,0,1);
 	spotLight->innerangle = 0.99f;
-	spotLight->outerangle = 0.88f;
+	spotLight->outerangle = 0.8f;
 	spotLight->Constant = 1;
-	spotLight->Linear = 0.0f;
-	spotLight->Exp = 0.0f;
+	spotLight->Linear = 0.00f;
+	spotLight->Exp = 0.00f;
 
 	g_lightManager.AddLight(spotLight);
 
@@ -239,10 +238,10 @@ void TestGraphics::Draw(float t)
 
 	frameBuffer->Bind();
 
-	glClearColor(0.0f,0.0f,1.0f,1);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0f,0.0f,1.0f,1);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
-	shadowProgram->BindTexture(texture->id(),0);
+	//shadowProgram->BindTexture(texture->id(),0);
 
 	shadowProgram->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*shadowProgram);
@@ -252,23 +251,24 @@ void TestGraphics::Draw(float t)
 
 
 	frameBuffer->Unbind();
+	ShaderProgram::Deactivate();
 
 	glClearColor(1.0f,0.5f,0.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 	program->Activate();
-	program->NSetUniform("LightMVP",lightCamera->ViewProjectionMatrix());
+	program->NSetUniform("LightVP",lightCamera->ViewProjectionMatrix());
 	program->BindLights();
 	program->BindCamera(*camera);
 	program->BindModel(glm::mat4(1.0f));
 	program->BindTexture(frameBuffer->GetDepth(),0);
+	program->BindTexture(texture->id(),1);
 
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
 
 	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
-
 
 	ShaderProgram::Deactivate();
 }

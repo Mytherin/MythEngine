@@ -94,22 +94,27 @@ namespace myth
 				SetUniform(GetUniformLocation(name),val);
 			}
 
-			//! Prints all attributes within this shader to the console window
+			//! Prints all attributes within this shader to the console window.
 			void PrintAttributes() const;
-			//! Prints all uniform variables within this shader to the console window
+			//! Prints all uniform variables within this shader to the console window.
 			void PrintUniforms() const;
-			//! Prints all uniform variables and their values within this shader to the console window
+			//! Prints all uniform variables and their values within this shader to the console window.
 			void PrintUniformValues() const;
 			
-			//!
+			/*! Binds a camera to the shader program; binding its matrices to the uniform matrix values within the shaders. 
+			* The camera is stored within the shaderprogram, so if the Model matrix changes through BindModel, the MVP matrix is 
+			* automatically updated.
+			*/
 			void BindCamera(const Camera& camera);
-			//!
+			//! Binds a model matrix to the shader program; binding the matrix and multiplication matrices (i.e. Model-View-Projection) to the shaders
 			void BindModel(const glm::mat4 model);
-			//!
+			//! Binds a material to the shader programs uniform values.
 			void BindMaterial(const Material& material);
-			//!
+			/*! Binds the lights stored in the LightManager singleton to the shader, allowing the shaders to use the lights properties.
+			* Note that not all lights may be bound, depending on the Max<type>Lights property within the shaders.
+			*/
 			void BindLights();
-			//!
+			//! Binds a 2D texture to the specified sampler slot of the shader program.
 			void BindTexture(GLuint texture, int index);
 
 			//! Gets the index of the specified shader type, ranging from 0..4

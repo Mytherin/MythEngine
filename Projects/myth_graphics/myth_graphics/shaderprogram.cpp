@@ -69,6 +69,11 @@ void ShaderProgram::AttachShader(Shader& shader)
 	if (!shader.IsLoaded()) shader.Load();
 	glAttachShader(m_shaderProgram,shader.id());
 	m_shaders.Add(&shader);
+
+	Uniforms.maxdirectionalLights = max(Uniforms.maxdirectionalLights,shader.MaxDirectionalLights());
+	Uniforms.maxspotLights = max(Uniforms.maxspotLights,shader.MaxSpotLights());
+	Uniforms.maxpointLights = max(Uniforms.maxpointLights,shader.MaxPointLights());
+	Uniforms.samplerCount = max(Uniforms.maxdirectionalLights,shader.MaxSamplerCount());
 }
 
 void ShaderProgram::RemoveShader(Shader& shader)
@@ -382,8 +387,10 @@ void ShaderProgram::BindLights()
 
 void ShaderProgram::BindTexture(GLuint texture, int index)
 {
+	Assert(index <= Uniforms.samplerCount,"Attempted to bind a texture to a texture index that was out of range of the valid texture indices of the shaderprogram.");
 	glActiveTexture(GL_TEXTURE0 + index);
 	glBindTexture(GL_TEXTURE_2D,texture);
+	SetUniform(Uniforms.Sampler[index],index);
 }
 
 void ShaderProgram::GenerateUniformLocations()
@@ -458,7 +465,6 @@ void ShaderProgram::GenerateUniformLocations()
 		for(int i = 0; i < Uniforms.samplerCount; i++)
 		{
 			Uniforms.Sampler[i] = GetUniformLocation("Sampler[","]",i,ss);
-			SetUniform(Uniforms.Sampler[i],i);
 		}
 	}
 }
