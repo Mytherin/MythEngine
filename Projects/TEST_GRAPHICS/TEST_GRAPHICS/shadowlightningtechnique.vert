@@ -14,7 +14,7 @@ uniform mat4 LightVP;
 void main()
 {
     gl_Position = MVP * vec4(Position, 1.0);
-	LightPos = Model * LightVP * vec4(Position,1.0);
+	LightPos = LightVP * Model * vec4(Position,1.0);
 
 	Normal0 = (Model * vec4(Normal,0.0)).xyz;
 	WorldPos0 = (Model * vec4(Position,1.0)).xyz;

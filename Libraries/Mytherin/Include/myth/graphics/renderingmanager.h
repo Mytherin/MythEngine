@@ -12,6 +12,7 @@
 #include <GL\GL.h>
 #include <GL\GLU.h>
 #include <myth\phys\shapes.h>
+#include <myth\graphics\mesh.h>
 
 
 namespace myth
@@ -21,7 +22,10 @@ namespace myth
 		class declspec_graphics RenderingManager
 		{
 		public:
-			
+			ModelMesh* GeneratePrimitive(phys::AABB aabb);
+			ModelMesh* GeneratePrimitive(phys::Rectangle rectangle);
+			ModelMesh* GeneratePrimitive(phys::Triangle triangle);
+
 			void RenderPrimitive(phys::AABB aabb);
 			void RenderPrimitive(phys::Line line);
 			void RenderPrimitive(phys::LineSegment lineSegment);

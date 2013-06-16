@@ -423,7 +423,7 @@ void ShaderProgram::Bind3DTexture(GLuint texture, int index)
 	Assert(index <= Uniforms.sampler3DCount,"Attempted to bind a texture to a texture index that was out of range of the valid texture indices of the shaderprogram.");
 	glActiveTexture(GL_TEXTURE0 + index);
 	
-	glBindTexture(GL_TEXTURE_3D,texture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP,texture);
 	
 	SetUniform(Uniforms.Sampler3D[index],index);
 }

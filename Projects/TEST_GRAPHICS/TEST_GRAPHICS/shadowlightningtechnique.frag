@@ -12,6 +12,7 @@ float GetShadowFactor(vec4 lightPosition)
 {
 	//convert the position to the projection coordinates 
 	vec3 proj = lightPosition.xyz / lightPosition.w;
+
 	//projection coordinates are [-1..1], texture coordinates are [0..1], simply convert them so we can get the values from the shadow map
 	vec2 UV;
 	UV.x = proj.x * 0.5 + 0.5;
@@ -19,10 +20,10 @@ float GetShadowFactor(vec4 lightPosition)
 	float z = proj.z * 0.5 + 0.5;
 
 	//obtain the depth from the depth texture
-	float depth = texture(Texture2D[0],UV).x;
+	float depth = texture(Texture2D[0],UV).y;
 
 	//if the depth of this texture is deeper than the stored depth, the pixel is behind an object, return 0.5
-	if (depth < (z + 0.0001))
+	if (depth < z - 0.00001)
 		return 0.5;
 	return 1.0;
 }
@@ -69,5 +70,6 @@ void main()
         specular += spotlightFactor * specularchange / attenuation;
 	}
 
-	FragColor = (ambient+diffuse + specular) * GetShadowFactor(LightPos) * texture2D(Texture2D[1],TexCoord0.st);
+	//FragColor = texture2D(Texture2D[0],TexCoord0);
+	FragColor = /*(ambient+diffuse + specular) **/ vec4(1) * GetShadowFactor(LightPos);// * texture2D(Texture2D[1],TexCoord0.st);
 }

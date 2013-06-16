@@ -82,12 +82,12 @@ void Framebuffer::Init(unsigned int width, unsigned int height)
 		m_texture = Texture2D::GenerateTexture(width,height,GL_RGBA8,GL_RGBA,GL_UNSIGNED_BYTE,TEXTURE_WRAP_REPEAT | TEXTURE_MINMAG_NEAREST);
 		m_depth = Renderbuffer::GenerateRenderbuffer(width,height,GL_DEPTH_COMPONENT24);
 
-		AttachTexture(GL_COLOR_ATTACHMENT0_EXT,m_texture);
-		AttachRenderbuffer(GL_DEPTH_ATTACHMENT_EXT,m_depth);
+		AttachTexture(GL_COLOR_ATTACHMENT0,m_texture);
+		AttachRenderbuffer(GL_DEPTH_ATTACHMENT,m_depth);
 		break;
 	case FRAMEBUFFER_DEPTH:
 		m_depth = Texture2D::GenerateTexture(width,height,GL_DEPTH_COMPONENT,GL_DEPTH_COMPONENT,GL_FLOAT,TEXTURE_WRAP_REPEAT | TEXTURE_MINMAG_NEAREST);
-		AttachTexture(GL_DEPTH_ATTACHMENT_EXT,m_depth);
+		AttachTexture(GL_DEPTH_ATTACHMENT,m_depth);
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 		break;
@@ -144,7 +144,7 @@ void Framebuffer::Unbind()
 
 void Framebuffer::AttachTexture(GLenum attachmentPoint, GLuint texture)
 {
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,attachmentPoint,GL_TEXTURE_2D,texture,0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER,attachmentPoint,GL_TEXTURE_2D,texture,0);
 }
 
 void Framebuffer::AttachRenderbuffer(GLenum attachmentPoint, GLuint renderbuffer)

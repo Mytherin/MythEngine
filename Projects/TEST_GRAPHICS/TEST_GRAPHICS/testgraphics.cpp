@@ -33,6 +33,7 @@ using namespace myth::phys;
 using namespace myth::resources;
 
 Texture *texture;
+Texture *cubeMap;
 Framebuffer *frameBuffer;
 SpotLight* spotLight, *spotLight2;
 ShaderProgram *program;
@@ -48,14 +49,13 @@ void TestGraphics::LoadContent()
 {
 
 	int vertexShaderS = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowmaptechnique.vert"));
-	int fragmentShaderS = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowmaptechnique.frag"));
-	int shaderProgramS = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShaderS) + ";" + std::to_string(fragmentShaderS)));
+	int shaderProgramS = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShaderS)));
 	shadowProgram = g_assetManager.GetAsset<ShaderProgram>(shaderProgramS);
 
 	shadowProgram->Load();
 
-	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowmaptechnique.vert"));
-	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowmaptechnique.frag"));
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowlightningtechnique.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowlightningtechnique.frag"));
 	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
@@ -67,6 +67,9 @@ void TestGraphics::LoadContent()
 	texture = new Texture2D(new FilePath("error.png"),0);
 	texture->Load();
 
+	cubeMap = new Texture3D(new FilePath("cubemap.png"),0);
+	cubeMap->Load();
+
 	Material *material = new Material();
 
 	material->Ambient_Color = Vector3F(1,1,1);
@@ -75,8 +78,10 @@ void TestGraphics::LoadContent()
 	material->Shininess = 0;
 	material->Shininess_Strength = 10;
 	
-	mesh = new Mesh(new FilePath("Plane.dae"),0);
-	mesh->Load();
+	mesh = new Mesh(g_renderingManager.GeneratePrimitive(myth::phys::Rectangle(myth::phys::Point(-1,0,-1),myth::phys::Point(-1,0,1),myth::phys::Point(1,0,-1))));
+
+	//mesh = new Mesh(new FilePath("Plane.dae"),0);
+	//mesh->Load();
 	mesh->SetMaterial(*material);
 
 	glEnable(GL_DEPTH_TEST);
@@ -92,7 +97,7 @@ void TestGraphics::LoadContent()
 	spotLight->location = Vector3(0,0,-10);
 	spotLight->direction = Vector3(0,0,1);
 	spotLight->innerangle = 0.99f;
-	spotLight->outerangle = 0.8f;
+	spotLight->outerangle = 0.9f;
 	spotLight->Constant = 1;
 	spotLight->Linear = 0.00f;
 	spotLight->Exp = 0.00f;
@@ -102,10 +107,10 @@ void TestGraphics::LoadContent()
 	
 
 	camera = new Camera();
-	camera->Perspective(75.0f,16.0f / 9.0f,1.0f,100.0f);
+	camera->Perspective(30.0f,16.0f / 9.0f,1.0f,100.0f);
 
 	lightCamera = new Camera();
-	lightCamera->Perspective(75.0f,16.0f / 9.0f,1.0f,100.0f);
+	lightCamera->Perspective(30.0f,16.0f / 9.0f,1.0f,100.0f);
 	lightCamera->SetPosition(spotLight->location);
 	lightCamera->SetDirection(spotLight->direction);
 	lightCamera->SetUp(glm::vec3(0,1,0));
@@ -124,8 +129,8 @@ void TestGraphics::LoadContent()
 
 	g_lightManager.AddLight(spotLight2);*/
 	
-	camera->SetPosition(spotLight->location);
-	camera->SetDirection(spotLight->direction);
+	camera->SetPosition(glm::vec3(15,0,50));
+	camera->SetDirection(glm::normalize(glm::vec3(-1,0,-2)));
 	camera->SetUp(glm::vec3(0,1,0));
 
 	
@@ -148,34 +153,33 @@ void TestGraphics::Input(myth::input::InputHandler& input)
 		if (inputEvent.IsKeyPress(KEY_ARROWLEFT) || inputEvent.IsKeyPress(KeyFromChar('A')))
 		{
 			//spotLight->location.x--;
-			camera->MoveSideways(-1);
+			lightCamera->MoveSideways(-1);
 			//lightCamera->MoveSideways(-1);
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWRIGHT) || inputEvent.IsKeyPress(KeyFromChar('D')))
 		{
 			//spotLight->location.x++;
-			camera->MoveSideways(1);
+			lightCamera->MoveSideways(1);
 			//lightCamera->MoveSideways(1);
 		}
 		else  if (inputEvent.IsKeyPress(KEY_ARROWUP) || inputEvent.IsKeyPress(KeyFromChar('W')))
 		{
-			camera->MoveForward(1);
+			lightCamera->MoveForward(1);
 			//lightCamera->MoveForward(1);
 			//spotLight->location.z++;
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWDOWN) || inputEvent.IsKeyPress(KeyFromChar('S')))
 		{
-			camera->MoveForward(-1);
-			//lightCamera->MoveForward(-1);
+			lightCamera->MoveForward(-1);
 			//spotLight->location.z--;
 		}
 		else if (inputEvent.IsKeyPress(KEY_SPACEBAR))
 		{
-			camera->MoveUp(1);
+			lightCamera->MoveUp(1);
 		}
 		else if (inputEvent.IsKeyPress(KEY_SPACEBAR,SHIFT))
 		{
-			camera->MoveUp(-1);
+			lightCamera->MoveUp(-1);
 		}
 		else if (inputEvent.IsMousePress(MOUSE_RIGHT))
 		{
@@ -209,6 +213,12 @@ void TestGraphics::Draw(float t)
 	float offsetX = cos(ang)*10;
 	float offsetZ = sin(ang)*10;
 	
+	spotLight->location = lightCamera->Position();
+	spotLight->direction = lightCamera->Direction();
+
+	//lightCamera->SetPosition(spotLight->location);
+	//lightCamera->SetDirection(spotLight->direction);
+
 	shadowProgram->Activate();
 	shadowProgram->BindCamera(*lightCamera);
 	shadowProgram->BindModel(glm::mat4(1.0f));
@@ -219,7 +229,7 @@ void TestGraphics::Draw(float t)
 	shadowProgram->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*shadowProgram);
 
-	shadowProgram->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
+	shadowProgram->BindModel(glm::scale(glm::vec3(5,5,5)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*shadowProgram);
 
 	frameBuffer->Unbind();
@@ -236,10 +246,15 @@ void TestGraphics::Draw(float t)
 	program->Bind2DTexture(frameBuffer->GetDepth(),0);
 	program->Bind2DTexture(texture->id(),1);
 
+	g_renderingManager.RenderPrimitive(myth::phys::Rectangle(
+		Vector3F(spotLight->location.x,spotLight->location.y,spotLight->location.z),
+		Vector3F(spotLight->location.x+1,spotLight->location.y,spotLight->location.z),
+		Vector3F(spotLight->location.x,spotLight->location.y+1,spotLight->location.z)));
+
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
 
-	program->BindModel(glm::scale(glm::vec3(3,3,3)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
+	program->BindModel(glm::scale(glm::vec3(5,5,5)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
 
 	program->Deactivate();

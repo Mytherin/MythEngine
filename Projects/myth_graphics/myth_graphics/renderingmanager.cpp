@@ -1,4 +1,6 @@
 
+#include <myth\debug\assert.h>
+
 #include <myth\phys\aabb.h>
 #include <myth\phys\line.h>
 #include <myth\phys\linesegment.h>
@@ -23,6 +25,33 @@ RenderingManager::RenderingManager()
 
 RenderingManager::~RenderingManager()
 {
+}
+
+
+ModelMesh* RenderingManager::GeneratePrimitive(AABB aabb)
+{
+	Assert(0,"NOT IMPLEMENTED");
+	return 0;
+}
+
+ModelMesh* RenderingManager::GeneratePrimitive(myth::phys::Rectangle rectangle)
+{
+	ModelMesh *mesh = new ModelMesh();
+	Point points[] = {rectangle.m_pointA,rectangle.m_pointB,rectangle.m_pointC,rectangle.m_pointB+(rectangle.m_pointC-rectangle.m_pointA)};
+	Normal mnormal = glm::cross(rectangle.m_pointB-rectangle.m_pointA,rectangle.m_pointC-rectangle.m_pointA);
+	Normal normals[] = {mnormal,mnormal,mnormal,mnormal,mnormal};
+	TexCoord texcoords[] = {TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1)};
+	unsigned short indices[] = {0,1,2,1,2,3};
+
+	mesh->Initialize(points,texcoords,normals,indices,4,6);
+	
+	return mesh;
+}
+
+ModelMesh* RenderingManager::GeneratePrimitive(Triangle triangle)
+{
+	Assert(0,"NOT IMPLEMENTED");
+	return 0;
 }
 
 void RenderingManager::RenderPrimitive(AABB aabb)
@@ -70,7 +99,7 @@ void RenderingManager::RenderPrimitive(Point point)
 	glDisableVertexAttribArray(0);
 	glDeleteBuffers(1,&VBO);
 }
-void RenderingManager::RenderPrimitive(Rectangle rectangle)
+void RenderingManager::RenderPrimitive(myth::phys::Rectangle rectangle)
 {
 	ModelMesh mesh = ModelMesh();
 	phys::Point points[] = {rectangle.m_pointA,rectangle.m_pointB,rectangle.m_pointC,rectangle.m_pointB+(rectangle.m_pointC-rectangle.m_pointA)};
@@ -83,6 +112,7 @@ void RenderingManager::RenderPrimitive(Rectangle rectangle)
 
 	mesh.Render();
 }
+
 void RenderingManager::RenderPrimitive(Sphere sphere)
 {
 }

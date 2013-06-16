@@ -66,10 +66,10 @@
         </source>
         <source id="pPlane1-UV0">
           <float_array id="pPlane1-UV0-array" count="8">
-0.000000 0.976144
-0.023857 -0.000000
-1.000000 0.023856
-0.976144 1.000000
+0.000000 1
+0 0.000000
+1.000000 0
+1 1.000000
 </float_array>
           <technique_common>
             <accessor source="#pPlane1-UV0-array" count="4" stride="2">

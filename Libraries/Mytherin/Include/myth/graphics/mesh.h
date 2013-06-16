@@ -26,6 +26,16 @@ namespace myth
 		{
 		public:
 			Mesh(myth::assets::FilePath *assetData, int package);
+			//! Temp
+			Mesh(ModelMesh* m) : 
+				myth::assets::FileAsset(new myth::assets::FilePath(""),0)
+			{
+				m_meshCount = 1;
+				m_materialCount = 1;
+				m_meshes = m;
+				m_materials = new Material[1];
+				m_textures = new Texture[1];
+			}
 
 			~Mesh();
 			
