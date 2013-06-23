@@ -43,22 +43,22 @@ namespace myth
 			//! Returns whether or not this input event corresponds to a specific keyboard key being pressed without any modifiers (CTRL/ALT/SHIFT)
 			bool IsKeyPress(ubyte key)
 			{
-				return m_inputKey == key && m_type == KEYBOARD | PRESSKEY && m_modifiers == NONE;
+				return m_inputKey == key && m_type == (KEYBOARD | PRESSKEY) && m_modifiers == NONE;
 			}
 			//! Returns whether or not this input event corresponds to a specific keyboard key being pressed with the specified modifiers
 			bool IsKeyPress(ubyte key, ubyte mod)
 			{
-				return m_inputKey == key && m_type == KEYBOARD | PRESSKEY && m_modifiers == mod;
+				return m_inputKey == key && m_type == (KEYBOARD | PRESSKEY) && m_modifiers == mod;
 			}
 			//! Returns whether or not this input event corresponds to a specific keyboard key being released without any modifiers (CTRL/ALT/SHIFT)
 			bool IsKeyRelease(ubyte key)
 			{
-				return m_inputKey == key && m_type == KEYBOARD | RELEASEKEY && m_modifiers == NONE;
+				return m_inputKey == key && m_type == (KEYBOARD | RELEASEKEY) && m_modifiers == NONE;
 			}
 			//! Returns whether or not this input event corresponds to a specific keyboard key being released with the specified modifiers
 			bool IsKeyRelease(ubyte key, ubyte mod)
 			{
-				return m_inputKey == key && m_type == KEYBOARD | RELEASEKEY && m_modifiers == mod;
+				return m_inputKey == key && m_type == (KEYBOARD | RELEASEKEY) && m_modifiers == mod;
 			}
 			//! Returns whether or not this input event corresponds to a specific mouse button being pressed with any modifiers
 			bool IsMousePress(ubyte mousebutton)

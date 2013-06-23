@@ -21,7 +21,6 @@
     <ClCompile Include="renderingmanager.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
-    <ClCompile Include="shadowmapfbo.cpp" />
     <ClCompile Include="skybox.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
@@ -47,7 +46,6 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shadermanager.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderprogram.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\skybox.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\testmesh.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\texture.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\vertex.h" />
   </ItemGroup>

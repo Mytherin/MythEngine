@@ -13,6 +13,7 @@
 #include <myth\graphics\light.h>
 #include <myth\graphics\lightmanager.h>
 #include <myth\graphics\shaderprogram.h>
+#include <myth\graphics\modelmesh.h>
 #include <myth\graphics\mesh.h>
 #include <myth\graphics\skybox.h>
 #include <myth\graphics\testmesh.h>
@@ -34,7 +35,7 @@ using namespace myth::graphics;
 using namespace myth::phys;
 using namespace myth::resources;
 
-Texture *texture;
+Texture *texture, *normal, *flatnormal;
 Texture *cubeMap;
 Framebuffer *frameBuffer;
 SpotLight* spotLight, *spotLight2;
@@ -43,14 +44,15 @@ Camera *camera;
 Camera *lightCamera;
 Skybox *skybox;
 
-Mesh *mesh;
+Material *material = 0;
+ModelMesh *mesh, *mm;
 Light *lights;
 bool drag;
 
 void TestGraphics::LoadContent()
 {
-	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("specularspotlight.vert"));
-	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("specularspotlight.frag"));
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("normalmapspotlight.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("normalmapspotlight.frag"));
 	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + "-" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
@@ -63,11 +65,17 @@ void TestGraphics::LoadContent()
 
 	texture = new Texture2D(new FilePath("error.png"),0);
 	texture->Load();
+	
+	flatnormal = new Texture2D(new FilePath("error_flat_normal.png"),0);
+	flatnormal->Load();
+
+	normal = new Texture2D(new FilePath("error_normal.png"),0);
+	normal->Load();
 
 	cubeMap = new Texture3D(new FilePath("cubemap.png"),0);
 	cubeMap->Load();
 
-	Material *material = new Material();
+	material = new Material();
 
 	material->Ambient_Color = Vector3F(1,1,1);
 	material->Diffuse_Color = Vector3F(1,1,1);
@@ -75,11 +83,11 @@ void TestGraphics::LoadContent()
 	material->Shininess = 0;
 	material->Shininess_Strength = 10;
 	
-	mesh = new Mesh(g_renderingManager.GeneratePrimitive(myth::phys::Rectangle(myth::phys::Point(-1,0,-1),myth::phys::Point(-1,0,1),myth::phys::Point(1,0,-1))));
+	mesh = g_renderingManager.GeneratePrimitive(myth::phys::Rectangle(myth::phys::Point(-1,0,-1),myth::phys::Point(-1,0,1),myth::phys::Point(1,0,-1)));
+	mm = g_renderingManager.GeneratePrimitive(AABB(-1,-1,-1,1,1,1));
 
 	//mesh = new Mesh(new FilePath("Plane.dae"),0);
 	//mesh->Load();
-	mesh->SetMaterial(*material);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_BUFFER_BIT);
@@ -140,52 +148,59 @@ void TestGraphics::UnloadContent()
 {
 }
 
+bool ShowBumpNormal = false;
 void TestGraphics::Input(myth::input::InputHandler& input)
 {
 	myth::input::InputEvent inputEvent;
+	
+	float cameraspeed = 0.05f;	
 
+	if (input.IsKeyPressed(KEY_ARROWLEFT) || input.IsKeyPressed(KeyFromChar('A')))
+	{
+		//spotLight->location.x--;
+		camera->MoveSideways(-cameraspeed);
+		//lightCamera->MoveSideways(-1);
+	}
+	else if (input.IsKeyPressed(KEY_ARROWRIGHT) || input.IsKeyPressed(KeyFromChar('D')))
+	{
+		//spotLight->location.x++;
+		camera->MoveSideways(cameraspeed);
+		//lightCamera->MoveSideways(1);
+	}
+	else  if (input.IsKeyPressed(KEY_ARROWUP) || input.IsKeyPressed(KeyFromChar('W')))
+	{
+		camera->MoveForward(cameraspeed);
+		//lightCamera->MoveForward(1);
+		//spotLight->location.z++;
+	}
+	else if (input.IsKeyPressed(KEY_ARROWDOWN) || input.IsKeyPressed(KeyFromChar('S')))
+	{
+		camera->MoveForward(-cameraspeed);
+		//spotLight->location.z--;
+	}
+	else if (input.IsKeyPressed(KEY_CHAR_Q))
+	{
+		camera->MoveUp(cameraspeed);
+	}
+	else if (input.IsKeyPressed(KEY_CHAR_E))
+	{
+		camera->MoveUp(-cameraspeed);
+	}
 	while (!input.Empty())
 	{
 		inputEvent = input.Pop();
 
-		if (inputEvent.IsKeyPress(KEY_ARROWLEFT) || inputEvent.IsKeyPress(KeyFromChar('A')))
-		{
-			//spotLight->location.x--;
-			camera->MoveSideways(-1);
-			//lightCamera->MoveSideways(-1);
-		}
-		else if (inputEvent.IsKeyPress(KEY_ARROWRIGHT) || inputEvent.IsKeyPress(KeyFromChar('D')))
-		{
-			//spotLight->location.x++;
-			camera->MoveSideways(1);
-			//lightCamera->MoveSideways(1);
-		}
-		else  if (inputEvent.IsKeyPress(KEY_ARROWUP) || inputEvent.IsKeyPress(KeyFromChar('W')))
-		{
-			camera->MoveForward(1);
-			//lightCamera->MoveForward(1);
-			//spotLight->location.z++;
-		}
-		else if (inputEvent.IsKeyPress(KEY_ARROWDOWN) || inputEvent.IsKeyPress(KeyFromChar('S')))
-		{
-			camera->MoveForward(-1);
-			//spotLight->location.z--;
-		}
-		else if (inputEvent.IsKeyPress(KEY_SPACEBAR))
-		{
-			camera->MoveUp(1);
-		}
-		else if (inputEvent.IsKeyPress(KEY_SPACEBAR,SHIFT))
-		{
-			camera->MoveUp(-1);
-		}
-		else if (inputEvent.IsMousePress(MOUSE_RIGHT))
+		if (inputEvent.IsMousePress(MOUSE_RIGHT))
 		{
 			drag = true;
 		}
 		else if (inputEvent.IsMouseRelease(MOUSE_RIGHT))
 		{
 			drag = false;
+		}
+		else if (inputEvent.IsKeyPress(KEY_CHAR_F))
+		{
+			ShowBumpNormal = !ShowBumpNormal;
 		}
 	}
 	if (drag)
@@ -211,8 +226,6 @@ void TestGraphics::Draw(float t)
 	float offsetX = cos(ang)*10;
 	float offsetZ = sin(ang)*10;
 	
-	ModelMesh *mm = g_renderingManager.GeneratePrimitive(AABB(-1,-1,-1,1,1,1));
-
 	glClearColor(1.0f,0.5f,0.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
@@ -224,17 +237,19 @@ void TestGraphics::Draw(float t)
 	program->BindCamera(*camera);
 	program->BindModel(glm::mat4(1.0f));
 	program->BindTexture(*texture,0);
+	if (ShowBumpNormal)
+		program->BindTexture(*normal,1);
+	else program->BindTexture(*flatnormal,1);
+	program->BindMaterial(*material);
 
 	program->BindModel(glm::translate(glm::vec3(0,0,10)));
 	mm->Render();
 
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*program);
-
+	mesh->Render();
+	
 	program->BindModel(glm::scale(glm::vec3(5,5,5)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*program);
+	mesh->Render();
 
 	program->Deactivate();
-
-	delete mm;
 }

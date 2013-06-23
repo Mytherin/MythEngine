@@ -28,6 +28,7 @@ ShaderProgram::ShaderProgram(myth::assets::AssetData *assetData, int package) :
 	glBindAttribLocation(m_shaderProgram,0,"Position");
 	glBindAttribLocation(m_shaderProgram,1,"TexCoord");
 	glBindAttribLocation(m_shaderProgram,2,"Normal");
+	glBindAttribLocation(m_shaderProgram,3,"Tangent");
 }
 
 ShaderProgram::~ShaderProgram()
@@ -344,8 +345,6 @@ void ShaderProgram::PrintUniformValues() const
 	}
 	free(name);
 }
-
-
 
 void ShaderProgram::BindCamera(const Camera& camera)
 {

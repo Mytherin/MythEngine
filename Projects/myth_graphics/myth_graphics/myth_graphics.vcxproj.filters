@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderprogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\testmesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,9 +120,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shadowmapfbo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="renderbuffer.cpp">

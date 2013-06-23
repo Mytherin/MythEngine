@@ -88,6 +88,8 @@ copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <None Include="ambient.frag" />
     <None Include="ambient.vert" />
+    <None Include="normalmapspotlight.frag" />
+    <None Include="normalmapspotlight.vert" />
     <None Include="sample.frag" />
     <None Include="sample.vert" />
     <None Include="shadowlightningtechnique.frag" />

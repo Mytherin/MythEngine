@@ -59,7 +59,7 @@ void Skybox::SetType(unsigned short t)
 
 		break;
 	default:
-		Assert(0, "SKYBOX ERROR: Could not ");
+		Assert(0, "SKYBOX ERROR: Unrecognized skybox type.");
 	}
 }
 

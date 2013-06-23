@@ -40,11 +40,13 @@ void InputHandler::ReleaseModifier(ubyte modifier)
 //Keystate Functions
 void InputHandler::PressKey(ubyte key)
 {
+	if (m_keyState.IsPressed(key)) return;
 	m_inputStream.Push(InputEvent(key,KEYBOARD | PRESSKEY,m_modifiers));
 	m_keyState.PressKey(key);
 }
 void InputHandler::ReleaseKey(ubyte key)
 {
+	if (!m_keyState.IsPressed(key)) return;
 	m_inputStream.Push(InputEvent(key,KEYBOARD | RELEASEKEY,m_modifiers));
 	m_keyState.ReleaseKey(key);
 }

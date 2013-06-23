@@ -133,8 +133,8 @@ ModelMesh* RenderingManager::GeneratePrimitive(myth::phys::Rectangle rectangle)
 {
 	ModelMesh *mesh = new ModelMesh();
 	Point points[] = {rectangle.m_pointA,rectangle.m_pointB,rectangle.m_pointC,rectangle.m_pointB+(rectangle.m_pointC-rectangle.m_pointA)};
-	Normal mnormal = glm::cross(rectangle.m_pointB-rectangle.m_pointA,rectangle.m_pointC-rectangle.m_pointA);
-	Normal normals[] = {mnormal,mnormal,mnormal,mnormal,mnormal};
+	Normal rectNormal = glm::cross(rectangle.m_pointB-rectangle.m_pointA,rectangle.m_pointC-rectangle.m_pointA);
+	Normal normals[] = {rectNormal,rectNormal,rectNormal,rectNormal};
 	TexCoord texcoords[] = {TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1)};
 	unsigned short indices[] = {0,1,2,1,2,3};
 
