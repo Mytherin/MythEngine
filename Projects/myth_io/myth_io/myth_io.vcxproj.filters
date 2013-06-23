@@ -21,6 +21,9 @@
     <ClCompile Include="filemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\fileentry.h">
@@ -35,10 +38,13 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\loadable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\stringext.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\types.h">
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="numerics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

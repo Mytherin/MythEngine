@@ -47,8 +47,9 @@ bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
 
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
-    if (Status != GL_FRAMEBUFFER_COMPLETE) {
-        printf("FB error, status: 0x%x\n", Status);
+    if (Status != GL_FRAMEBUFFER_COMPLETE)
+	{
+        printf("FRAMEBUFFER ERROR. Status: 0x%x\n", Status);
         return false;
     }
 

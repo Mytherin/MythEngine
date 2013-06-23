@@ -22,6 +22,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="shadowmapfbo.cpp" />
+    <ClCompile Include="skybox.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +46,7 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderconstants.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shadermanager.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\shaderprogram.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\skybox.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\testmesh.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\texture.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\vertex.h" />
@@ -99,7 +101,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_generic.lib;myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;myth_resources.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,7 +119,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myth_generic.lib;myth_shapes.lib;OpenGL32.lib;myth_io.lib;glu32.lib;glew32.lib;glew32s.lib;glew32mx.lib;glew32mxs.lib;Soil.lib;assimp.lib;myth_assets.lib;myth_resources.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

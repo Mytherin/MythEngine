@@ -30,8 +30,103 @@ RenderingManager::~RenderingManager()
 
 ModelMesh* RenderingManager::GeneratePrimitive(AABB aabb)
 {
-	Assert(0,"NOT IMPLEMENTED");
-	return 0;
+	Point A = aabb.m_center + Point( aabb.m_size.x,  aabb.m_size.y,  aabb.m_size.z);
+	Point B = aabb.m_center + Point(-aabb.m_size.x,  aabb.m_size.y,  aabb.m_size.z);
+	Point C = aabb.m_center + Point( aabb.m_size.x, -aabb.m_size.y,  aabb.m_size.z);
+	Point D = aabb.m_center + Point(-aabb.m_size.x, -aabb.m_size.y,  aabb.m_size.z);
+	Point E = aabb.m_center + Point( aabb.m_size.x,  aabb.m_size.y, -aabb.m_size.z);
+	Point F = aabb.m_center + Point(-aabb.m_size.x,  aabb.m_size.y, -aabb.m_size.z);
+	Point G = aabb.m_center + Point( aabb.m_size.x, -aabb.m_size.y, -aabb.m_size.z);
+	Point H = aabb.m_center + Point(-aabb.m_size.x, -aabb.m_size.y, -aabb.m_size.z);
+
+	Normal FRONTN = glm::normalize(E-A);
+	Normal BACKN = glm::normalize(A-E);
+	Normal TOPN = glm::normalize(C-A);
+	Normal BOTN = glm::normalize(A-C);
+	Normal LEFTN = glm::normalize(B-A);
+	Normal RIGHTN = glm::normalize(A-B);
+
+	ModelMesh *mesh = new ModelMesh();
+
+	/*Point points[] = {A,B,C,D,E,F,G,H};
+
+	float sqrt3 = 1 / sqrt(3);
+	//for every vertex normal, subtract the point from the complete opposite point on the cube
+	Normal normals[] = {
+		Normal( sqrt3,  sqrt3,  sqrt3),
+		Normal(-sqrt3,  sqrt3,  sqrt3),
+		Normal( sqrt3, -sqrt3,  sqrt3),
+		Normal(-sqrt3, -sqrt3,  sqrt3),
+		Normal( sqrt3,  sqrt3, -sqrt3),
+		Normal(-sqrt3,  sqrt3, -sqrt3),
+		Normal( sqrt3, -sqrt3, -sqrt3),
+		Normal(-sqrt3, -sqrt3, -sqrt3),
+
+	};
+	TexCoord texcoords[] = {
+		TexCoord(0,0),
+		TexCoord(1,0),
+		TexCoord(0,1),
+		TexCoord(1,1),
+		TexCoord(1,1),
+		TexCoord(0,1),
+		TexCoord(1,0),
+		TexCoord(0,0)
+	};
+
+	unsigned short indices[] = 
+	{
+		0,1,2,       //ABCD quad [front]
+		3,2,1,   
+		4,5,6,       //EFGH quad [back]
+		7,6,5,
+		1,5,3,       //BDFH quad [side]
+		7,3,5,
+		4,0,2,       //ACEG quad [side]
+		6,2,0,
+		4,5,0,       //ABEF quad [top]
+		1,0,5,
+		3,2,7,       //CDGH quad [bottom]      
+		6,7,2
+	};*/
+	
+	Point points[] = {
+		A,B,C,D,       //ABCD quad [front]         
+		E,F,G,H,       //EFGH quad [back]
+		B,D,F,H,       //BDFH quad [left side]
+		A,C,E,G,       //ACEG quad [right side]
+		A,B,E,F,       //ABEF quad [top]
+		C,D,G,H};      //CDGH quad [bottom]    
+	Normal normals[] = {
+		FRONTN,FRONTN,FRONTN,FRONTN,
+		BACKN,BACKN,BACKN,BACKN,
+		LEFTN,LEFTN,LEFTN,LEFTN,
+		RIGHTN,RIGHTN,RIGHTN,RIGHTN,
+		TOPN,TOPN,TOPN,TOPN,
+		BOTN,BOTN,BOTN,BOTN
+	};
+	TexCoord texcoords[] = {
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1),
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1),
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1),
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1),
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1),
+		TexCoord(0,0),TexCoord(1,0),TexCoord(0,1),TexCoord(1,1)
+	};
+
+	unsigned short indices[] = 
+	{
+		0,1,2,3,2,1,
+		4,5,6,7,6,5,
+		8,9,10,11,10,9,
+		12,13,14,15,14,13,
+		16,17,18,19,18,17,
+		20,21,22,23,22,21
+	};
+
+	mesh->Initialize(points,texcoords,normals,indices,24,36);
+	
+	return mesh;
 }
 
 ModelMesh* RenderingManager::GeneratePrimitive(myth::phys::Rectangle rectangle)
@@ -56,15 +151,21 @@ ModelMesh* RenderingManager::GeneratePrimitive(Triangle triangle)
 
 void RenderingManager::RenderPrimitive(AABB aabb)
 {
+	ModelMesh *m = GeneratePrimitive(aabb);
+	m->Render();
+	delete m;
 }
 void RenderingManager::RenderPrimitive(Line line)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 void RenderingManager::RenderPrimitive(LineSegment lineSegment)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 void RenderingManager::RenderPrimitive(OBB obb)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 void RenderingManager::RenderPrimitive(Plane plane)
 {
@@ -81,10 +182,12 @@ void RenderingManager::RenderPrimitive(Plane plane)
 }
 void RenderingManager::RenderPrimitive(Polyhedron polyhedron)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 
 void RenderingManager::RenderPrimitive(PointCloud polygon)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 void RenderingManager::RenderPrimitive(Point point)
 {
@@ -115,6 +218,7 @@ void RenderingManager::RenderPrimitive(myth::phys::Rectangle rectangle)
 
 void RenderingManager::RenderPrimitive(Sphere sphere)
 {
+	Assert(0,"NOT IMPLEMENTED");
 }
 
 void RenderingManager::RenderPrimitive(Tetrahedron tetrahedron)

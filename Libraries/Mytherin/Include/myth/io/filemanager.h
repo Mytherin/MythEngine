@@ -9,7 +9,7 @@
 #define declspec_io __declspec(dllimport)
 #endif
 
-#include <string>
+#include <myth\generic\string.h>
 
 namespace myth
 {
@@ -24,7 +24,7 @@ namespace myth
 			\param length Location of an integer, if a non-null value is provided the length of the text file will be written to this location
 			\return A pointer to the contents of the text file
 			*/
-			virtual std::string ReadFile(const std::string filename) const = 0;
+			virtual String ReadFile(const String filename) const = 0;
 
 
 			//! Synchronous File I/O, starts reading the object with the specified file entry index from a managed file directory object (.zip)

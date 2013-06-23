@@ -90,6 +90,9 @@
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\renderbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\graphics\skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="renderingmanager.cpp">
@@ -126,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="renderbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

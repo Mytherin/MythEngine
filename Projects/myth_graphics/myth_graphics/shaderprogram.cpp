@@ -1,11 +1,14 @@
 
 #include <myth\debug\assert.h>
+#include <myth\generic\numerics.h>
 #include <myth\graphics\lightmanager.h>
 #include <myth\graphics\shaderconstants.h>
 #include <myth\graphics\shaderprogram.h>
+#include <myth\resources\assettypes.h>
+#include <myth\resources\resourcemanager.h>
 
 #include <myth\io\filemanager.h>
-#include <myth\io\stringext.h>
+#include <myth\io\parser.h>
 
 #include <myth\assets\assetmanager.h>
 #include <sstream>
@@ -14,6 +17,7 @@ using namespace glm;
 using namespace myth::graphics;
 using namespace myth::io;
 using namespace myth::assets;
+using namespace myth::resources;
 
 ShaderProgram::ShaderProgram(myth::assets::AssetData *assetData, int package) : 
 	SourceAsset(assetData,package)
@@ -33,12 +37,49 @@ ShaderProgram::~ShaderProgram()
 
 void ShaderProgram::LoadFromSource(std::string source)
 {
-	std::vector<int> shaders = SplitIntegers(source,';');
+	List<String> shaders = Parser::SplitStrings(source,'-');
 
 	for(int i = 0; i < shaders.size(); i++)
 	{
-		Shader *shader = g_assetManager.GetAsset<Shader>(m_package,shaders[i]);
-		AttachShader(*shader);
+		if (Int::ParseString(shaders[i]) == -1)
+		{
+			KeyValueMap map = Parser::ParseAssignments(shaders[i],"(%n:%v)");
+
+			int type;
+
+			Assert(map.count("type"),"SHADER LOADING ERROR: No shader type was provided.");
+			Assert(map.count("path") || map.count("source"),"SHADER LOADING ERROR: No shader file path or source was provided.");
+
+			if (map["type"][0] == 'v') 
+			{
+				type = ASSET_VERTEX_SHADER;
+			}
+			else if (map["type"][0] == 'f') 
+			{
+				type = ASSET_FRAGMENT_SHADER;
+			}
+			else 
+			{
+				Assert(false,"SHADER LOADING ERROR: An invalid shader type was provided.");
+			}
+
+			int shaderIndex;
+			if (map.count("path"))
+			{
+				shaderIndex = g_resourcemanager.CreateAsset(type,new FilePath(map["path"]));
+			}
+			else
+			{
+				shaderIndex = g_resourcemanager.CreateAsset(type,new Source(map["source"]));
+			}
+			Shader *shader = g_assetManager.GetAsset<Shader>(m_package,shaderIndex);
+			AttachShader(*shader);
+		}
+		else
+		{
+			Shader *shader = g_assetManager.GetAsset<Shader>(m_package, Int::ParseString(shaders[i]));
+			AttachShader(*shader);
+		}
 	}
 	Link();
 }
@@ -398,7 +439,7 @@ void ShaderProgram::BindTexture(GLuint textureType, GLuint texture, int index)
 		case GL_TEXTURE_2D:
 			Bind2DTexture(texture,index);
 			return;
-		case GL_TEXTURE_3D:
+		case GL_TEXTURE_CUBE_MAP:
 			Bind3DTexture(texture,index);
 			return;
 		default:

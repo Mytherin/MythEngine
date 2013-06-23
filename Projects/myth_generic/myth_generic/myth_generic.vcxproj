@@ -11,22 +11,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{188AA59D-B0F8-4878-BC0A-4D34E61B29B8}</ProjectGuid>
-    <RootNamespace>TEST_GRAPHICS</RootNamespace>
+    <ProjectGuid>{88A4A956-70F6-46A4-ADEA-58C94B82BF08}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>myth_generic</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -39,71 +40,59 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(MYTHERIN)Include;$(OPENGL)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(OPENGL)Lib;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(MYTHERIN)Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(MYTHERIN)Include;$(OPENGL)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(OPENGL)Lib;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(MYTHERIN)Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_dll_generic_export_;WIN32;_DEBUG;_WINDOWS;_USRDLL;MYTH_GENERIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>myth_generic.lib;myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;myth_assets.lib;myth_io.lib;myth_resources.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy "$(OPENGL)Lib\*.dll" "$(OutDir)"
-copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_dll_generic_export_;WIN32;NDEBUG;_WINDOWS;_USRDLL;MYTH_GENERIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>myth_generic.lib;myth_os_windows.lib;myth_input.lib;myth_managers.lib;myth_shapes.lib;myth_graphics.lib;myth_assets.lib;myth_io.lib;myth_resources.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy "$(OPENGL)Lib\*.dll" "$(OutDir)"
-copy "$(LUA)Lib\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="testgraphics.cpp" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\generic\list.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\generic\map.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\generic\numerics.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\generic\string.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="testgraphics.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ambient.frag" />
-    <None Include="ambient.vert" />
-    <None Include="sample.frag" />
-    <None Include="sample.vert" />
-    <None Include="shadowlightningtechnique.frag" />
-    <None Include="shadowlightningtechnique.vert" />
-    <None Include="shadowmaptechnique.frag" />
-    <None Include="shadowmaptechnique.vert" />
-    <None Include="skybox.frag" />
-    <None Include="skybox.vert" />
-    <None Include="specular.frag" />
-    <None Include="specular.vert" />
-    <None Include="specularpoint.frag" />
-    <None Include="specularpoint.vert" />
-    <None Include="specularspotlight.frag" />
-    <None Include="specularspotlight.vert" />
-    <None Include="uishader.frag" />
-    <None Include="uishader.vert" />
+    <ClCompile Include="double.cpp" />
+    <ClCompile Include="float.cpp" />
+    <ClCompile Include="int.cpp" />
+    <ClCompile Include="long.cpp" />
+    <ClCompile Include="numerics.cpp" />
+    <ClCompile Include="short.cpp" />
+    <ClCompile Include="uint.cpp" />
+    <ClCompile Include="ulong.cpp" />
+    <ClCompile Include="ushort.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,10 +1,13 @@
 
 #include <myth\debug\assert.h>
+#include <myth\generic\numerics.h>
 #include <myth\graphics\shader.h>
 #include <myth\graphics\shaderprogram.h>
+#include <myth\io\parser.h>
 #include <sstream>
 
 using namespace myth::graphics;
+using namespace myth::io;
 
 Shader::Shader(GLenum shaderType,myth::assets::AssetData *assetData, int package) :
 	SourceAsset(assetData,package), m_shaderType(shaderType),m_shaderHandle(0)
@@ -47,36 +50,22 @@ void Shader::Destroy()
 	m_shaderHandle = 0;
 }
 
-bool GetDefine(std::string defineName, std::string source, int* value)
-{
-	//search the text for a '#define <defineName> <value>' statement
-	//if such a statement exists, return true and return the value as an integer
-	//otherwise return false
-	std::string define = "#define " + defineName + " ";
-	int loc = source.find(define);
-	if (loc < source.size() - define.size() - 1)
-	{
-		int i = loc + define.size();
-		while(i < source.size() && source[i] != '\n' && source[i] != '\r') ++i;
-		
-		*value = std::stoi(source.substr(loc + define.size(),i - (loc + define.size())));
-		return true;
-	}
-	return false;
-}
-
 GLuint Shader::Create(GLenum type, std::string source)
 {
 	GLuint shader = glCreateShader(type);
 
-	Assert(shader,"SHADER CREATION ERROR: Could not create a shader of the specified shader type.");
+	Assert(shader, "SHADER CREATION ERROR: Could not create a shader of the specified shader type.");
+
+	KeyValueMap map = Parser::ParseAssignments(source, String("#define %n %v") + Parser::LineEnd(), false, true);
 
 	//parse shader source to find max lights, if the information is not there, add the default information
-	if (!GetDefine("MaxDirectionalLights",source,&m_maxdirectionalLights)) m_maxdirectionalLights = DefaultDirectionalLights;
-	if (!GetDefine("MaxPointLights",source,&m_maxpointLights)) m_maxpointLights = DefaultPointLights;
-	if (!GetDefine("MaxSpotLights",source,&m_maxspotLights)) m_maxspotLights = DefaultSpotLights;
-	if (!GetDefine("MaxSampler2D",source,&m_sampler2DCount)) m_sampler2DCount = DefaultSampler2DCount;
-	if (!GetDefine("MaxSampler3D",source,&m_sampler3DCount)) m_sampler3DCount = DefaultSampler3DCount;
+	
+
+	m_maxdirectionalLights = map.count("MaxDirectionalLights")       ? Int::ParseString(map["MaxDirectionalLights"]) : DefaultDirectionalLights;
+	m_maxpointLights       = map.count("MaxPointLights")             ? Int::ParseString(map["MaxPointLights"])       : DefaultPointLights;
+	m_maxspotLights        = map.count("MaxSpotLights")              ? Int::ParseString(map["MaxSpotLights"])        : DefaultSpotLights;
+	m_sampler2DCount       = map.count("MaxSampler2D")               ? Int::ParseString(map["MaxSampler2D"])         : DefaultSampler2DCount;
+	m_sampler3DCount       = map.count("MaxSampler3D")               ? Int::ParseString(map["MaxSampler3D"])         : DefaultSampler3DCount;
 	
 	//prepend uniform variables used in the shader (matrices, samplers, light information)
 	std::stringstream ss;
@@ -146,7 +135,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 	ss << 
 		"uniform sampler2D Texture2D[" << m_sampler2DCount << "];    \n";
 	ss << 
-		"uniform sampler3D Texture3D[" << m_sampler3DCount << "];    \n";
+		"uniform samplerCube Texture3D[" << m_sampler3DCount << "];    \n";
 	std::string str = ss.str();
 
 	const GLchar *codeArray[] = {str.c_str(), source.c_str()};

@@ -36,15 +36,15 @@ void Texture::LoadFromFile(std::string filepath)
 				Assert(0,"TEXTURE LOADING ERROR: Failure to load texture.");
 			}
 			return;
-		case GL_TEXTURE_3D:
+		case GL_TEXTURE_CUBE_MAP:
 			m_texture = SOIL_load_OGL_single_cubemap(
 					filepath.c_str(),
 					"UWSEND",
 					SOIL_LOAD_AUTO,
 					SOIL_CREATE_NEW_ID,
-					SOIL_FLAG_MIPMAPS |  SOIL_FLAG_DDS_LOAD_DIRECT
+					SOIL_FLAG_MIPMAPS
 				);
-			
+
 			DEBUGIF(m_texture == 0)
 			{
 				printf("TEXTURE LOAD ERROR: Failure to load texture \"%s\". Does the file with the specified filename exist and is it one of the supported formats by SOIL?\n",filepath);

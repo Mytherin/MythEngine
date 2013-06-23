@@ -13,14 +13,16 @@
   <ItemGroup>
     <ClCompile Include="fileentry.cpp" />
     <ClCompile Include="filemanager.cpp" />
+    <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\fileentry.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\fileindex.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\filemanager.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\loadable.h" />
-    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\stringext.h" />
+    <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\parser.h" />
     <ClInclude Include="..\..\..\Libraries\Mytherin\Include\myth\io\types.h" />
+    <ClInclude Include="numerics.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC75AD59-4C07-4B0E-9A8F-CD0ABBF84CD4}</ProjectGuid>

@@ -14,12 +14,14 @@
 #include <myth\graphics\lightmanager.h>
 #include <myth\graphics\shaderprogram.h>
 #include <myth\graphics\mesh.h>
+#include <myth\graphics\skybox.h>
 #include <myth\graphics\testmesh.h>
 #include <myth\graphics\texture.h>
 #include <myth\graphics\renderingmanager.h>
 #include <myth\input\inputevent.h>
 #include <myth\input\keyvalues.h>
 #include "testgraphics.h"
+#include <myth\phys\aabb.h>
 #include <myth\phys\plane.h>
 #include <myth\phys\rectangle.h>
 #include <myth\phys\tetrahedron.h>
@@ -37,9 +39,9 @@ Texture *cubeMap;
 Framebuffer *frameBuffer;
 SpotLight* spotLight, *spotLight2;
 ShaderProgram *program;
-ShaderProgram *shadowProgram;
 Camera *camera;
 Camera *lightCamera;
+Skybox *skybox;
 
 Mesh *mesh;
 Light *lights;
@@ -47,20 +49,15 @@ bool drag;
 
 void TestGraphics::LoadContent()
 {
-
-	int vertexShaderS = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowmaptechnique.vert"));
-	int shaderProgramS = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShaderS)));
-	shadowProgram = g_assetManager.GetAsset<ShaderProgram>(shaderProgramS);
-
-	shadowProgram->Load();
-
-	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("shadowlightningtechnique.vert"));
-	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("shadowlightningtechnique.frag"));
-	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + ";" + std::to_string(fragmentShader)));
+	int vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("specularspotlight.vert"));
+	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("specularspotlight.frag"));
+	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + "-" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
 	program->Load();
 	
+	skybox = new Skybox(new Source("texture = cubemap.png; shaders = (type:vert)(path:skybox.vert)-(type:frag)(path:skybox.frag); type = 2; size = 1;"),0);
+	skybox->Load();
 
 	program->PrintUniforms();
 
@@ -88,6 +85,7 @@ void TestGraphics::LoadContent()
 	glEnable(GL_DEPTH_BUFFER_BIT);
 	glDepthFunc(GL_LEQUAL);
 	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
 
 	drag = false;
 
@@ -153,33 +151,33 @@ void TestGraphics::Input(myth::input::InputHandler& input)
 		if (inputEvent.IsKeyPress(KEY_ARROWLEFT) || inputEvent.IsKeyPress(KeyFromChar('A')))
 		{
 			//spotLight->location.x--;
-			lightCamera->MoveSideways(-1);
+			camera->MoveSideways(-1);
 			//lightCamera->MoveSideways(-1);
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWRIGHT) || inputEvent.IsKeyPress(KeyFromChar('D')))
 		{
 			//spotLight->location.x++;
-			lightCamera->MoveSideways(1);
+			camera->MoveSideways(1);
 			//lightCamera->MoveSideways(1);
 		}
 		else  if (inputEvent.IsKeyPress(KEY_ARROWUP) || inputEvent.IsKeyPress(KeyFromChar('W')))
 		{
-			lightCamera->MoveForward(1);
+			camera->MoveForward(1);
 			//lightCamera->MoveForward(1);
 			//spotLight->location.z++;
 		}
 		else if (inputEvent.IsKeyPress(KEY_ARROWDOWN) || inputEvent.IsKeyPress(KeyFromChar('S')))
 		{
-			lightCamera->MoveForward(-1);
+			camera->MoveForward(-1);
 			//spotLight->location.z--;
 		}
 		else if (inputEvent.IsKeyPress(KEY_SPACEBAR))
 		{
-			lightCamera->MoveUp(1);
+			camera->MoveUp(1);
 		}
 		else if (inputEvent.IsKeyPress(KEY_SPACEBAR,SHIFT))
 		{
-			lightCamera->MoveUp(-1);
+			camera->MoveUp(-1);
 		}
 		else if (inputEvent.IsMousePress(MOUSE_RIGHT))
 		{
@@ -213,43 +211,22 @@ void TestGraphics::Draw(float t)
 	float offsetX = cos(ang)*10;
 	float offsetZ = sin(ang)*10;
 	
-	spotLight->location = lightCamera->Position();
-	spotLight->direction = lightCamera->Direction();
-
-	//lightCamera->SetPosition(spotLight->location);
-	//lightCamera->SetDirection(spotLight->direction);
-
-	shadowProgram->Activate();
-	shadowProgram->BindCamera(*lightCamera);
-	shadowProgram->BindModel(glm::mat4(1.0f));
-	frameBuffer->Bind();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	shadowProgram->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*shadowProgram);
-
-	shadowProgram->BindModel(glm::scale(glm::vec3(5,5,5)) * glm::translate(glm::vec3(0,0,5)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
-	mesh->Render(*shadowProgram);
-
-	frameBuffer->Unbind();
-	shadowProgram->Deactivate();
+	ModelMesh *mm = g_renderingManager.GeneratePrimitive(AABB(-1,-1,-1,1,1,1));
 
 	glClearColor(1.0f,0.5f,0.0f,1);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
+	skybox->BindCamera(camera);
+	skybox->Render();
+
 	program->Activate();
-	program->NSetUniform("LightVP",lightCamera->ViewProjectionMatrix());
 	program->BindLights();
 	program->BindCamera(*camera);
 	program->BindModel(glm::mat4(1.0f));
-	program->Bind2DTexture(frameBuffer->GetDepth(),0);
-	program->Bind2DTexture(texture->id(),1);
+	program->BindTexture(*texture,0);
 
-	g_renderingManager.RenderPrimitive(myth::phys::Rectangle(
-		Vector3F(spotLight->location.x,spotLight->location.y,spotLight->location.z),
-		Vector3F(spotLight->location.x+1,spotLight->location.y,spotLight->location.z),
-		Vector3F(spotLight->location.x,spotLight->location.y+1,spotLight->location.z)));
+	program->BindModel(glm::translate(glm::vec3(0,0,10)));
+	mm->Render();
 
 	program->BindModel(glm::translate(glm::vec3(0,0,0)) * glm::rotate(glm::mat4(1.0f),90.0f,glm::vec3(1.0f,0.0f,0.0f)) * glm::rotate(0.0f,glm::vec3(0.0f,0.0f,1.0f)));
 	mesh->Render(*program);
@@ -258,4 +235,6 @@ void TestGraphics::Draw(float t)
 	mesh->Render(*program);
 
 	program->Deactivate();
+
+	delete mm;
 }

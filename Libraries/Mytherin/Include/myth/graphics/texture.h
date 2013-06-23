@@ -68,7 +68,7 @@ namespace myth
 		{
 		public:
 			//! Initialization Constructor
-			Texture3D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_3D,assetData,package){}
+			Texture3D(myth::assets::FilePath *assetData, int package) : Texture(GL_TEXTURE_CUBE_MAP,assetData,package){}
 			//! Destructor
 			~Texture3D(){}
 		};
