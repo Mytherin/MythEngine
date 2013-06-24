@@ -59,6 +59,10 @@ void ShaderProgram::LoadFromSource(std::string source)
 			{
 				type = ASSET_FRAGMENT_SHADER;
 			}
+			else if (map["type"][0] == 'g') 
+			{
+				type = ASSET_GEOMETRIC_SHADER;
+			}
 			else 
 			{
 				Assert(false,"SHADER LOADING ERROR: An invalid shader type was provided.");

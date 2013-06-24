@@ -73,5 +73,12 @@ namespace myth
 			FragmentShader(myth::assets::AssetData *assetData, int package) : Shader(GL_FRAGMENT_SHADER,assetData,package){}
 			~FragmentShader(){}
 		};
+		
+		class GeometricShader : public Shader
+		{
+		public:
+			GeometricShader(myth::assets::AssetData *assetData, int package) : Shader(GL_GEOMETRY_SHADER,assetData,package){}
+			~GeometricShader(){}
+		};
 	}
 }

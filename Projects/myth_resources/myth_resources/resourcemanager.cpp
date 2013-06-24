@@ -31,6 +31,9 @@ int ResourceManager::CreateAsset(short type, AssetData *assetData)
 	case ASSET_VERTEX_SHADER:
 		asset = new myth::graphics::VertexShader(assetData,0);
 		break;
+	case ASSET_GEOMETRIC_SHADER:
+		asset = new myth::graphics::GeometricShader(assetData,0);
+		break;
 	case ASSET_SHADERPROGRAM:
 		asset = new myth::graphics::ShaderProgram(assetData,0);
 		break;

@@ -88,5 +88,14 @@
     <None Include="normalmapspotlight.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="billboarding.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="billboarding.geo">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="billboarding.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

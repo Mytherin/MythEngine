@@ -16,7 +16,6 @@
 #include <myth\graphics\modelmesh.h>
 #include <myth\graphics\mesh.h>
 #include <myth\graphics\skybox.h>
-#include <myth\graphics\testmesh.h>
 #include <myth\graphics\texture.h>
 #include <myth\graphics\renderingmanager.h>
 #include <myth\input\inputevent.h>
@@ -27,7 +26,6 @@
 #include <myth\phys\rectangle.h>
 #include <myth\phys\tetrahedron.h>
 #include <myth\phys\triangle.h>
-#include <myth\graphics\shadowfbo.h>
 
 using namespace myth::assets;
 using namespace myth::input;
@@ -39,7 +37,7 @@ Texture *texture, *normal, *flatnormal;
 Texture *cubeMap;
 Framebuffer *frameBuffer;
 SpotLight* spotLight, *spotLight2;
-ShaderProgram *program;
+ShaderProgram *program, *geom;
 Camera *camera;
 Camera *lightCamera;
 Skybox *skybox;
@@ -55,8 +53,15 @@ void TestGraphics::LoadContent()
 	int fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("normalmapspotlight.frag"));
 	int shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(vertexShader) + "-" + std::to_string(fragmentShader)));
 	program = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
+	
+	vertexShader = g_resourcemanager.CreateAsset(ASSET_VERTEX_SHADER,new FilePath("billboarding.vert"));
+	int geometricShader = g_resourcemanager.CreateAsset(ASSET_GEOMETRIC_SHADER,new FilePath("billboarding.geo"));
+	fragmentShader = g_resourcemanager.CreateAsset(ASSET_FRAGMENT_SHADER,new FilePath("billboarding.frag"));
+	shaderProgram = g_resourcemanager.CreateAsset(ASSET_SHADERPROGRAM,new Source(std::to_string(geometricShader) + "-" + std::to_string(vertexShader) + "-" + std::to_string(fragmentShader)));
+	geom = g_assetManager.GetAsset<ShaderProgram>(shaderProgram);
 
 	program->Load();
+	geom->Load();
 	
 	skybox = new Skybox(new Source("texture = cubemap.png; shaders = (type:vert)(path:skybox.vert)-(type:frag)(path:skybox.frag); type = 2; size = 1;"),0);
 	skybox->Load();
@@ -252,4 +257,15 @@ void TestGraphics::Draw(float t)
 	mesh->Render();
 
 	program->Deactivate();
+
+	
+	geom->Activate();
+	geom->BindLights();
+	geom->BindCamera(*camera);
+	geom->BindModel(glm::mat4(1.0f));
+
+	g_renderingManager.RenderPrimitive(glm::vec3(10,10,0));
+	
+
+	geom->Deactivate();
 }

@@ -69,7 +69,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 	
 	//prepend uniform variables used in the shader (matrices, samplers, light information)
 	std::stringstream ss;
-	ss << "#version 150 \r\n";
+	ss << "#version 150 \n";
 	ss << "#define MaxDirectionalLights "   << m_maxdirectionalLights <<   "\n"; 
 	ss << "#define MaxPointLights "         << m_maxpointLights       <<   "\n";
 	ss << "#define MaxSpotLights "          << m_maxspotLights        <<   "\n";
@@ -133,7 +133,7 @@ GLuint Shader::Create(GLenum type, std::string source)
 		"uniform vec3 EyePos;                                          \n"
 		"uniform vec3 EyeDir;                                          \n";
 	ss << 
-		"uniform sampler2D Texture2D[" << m_sampler2DCount << "];    \n";
+		"uniform sampler2D Texture2D[" << m_sampler2DCount << "];      \n";
 	ss << 
 		"uniform samplerCube Texture3D[" << m_sampler3DCount << "];    \n";
 	std::string str = ss.str();
